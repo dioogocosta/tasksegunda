@@ -1,0 +1,21 @@
+{
+  "name": "Tarefas Segunda",
+  "short_name": "TarefasSegunda",
+  "description": "Aplicativo de gerenciamento de tarefas para segunda-feira",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f2f2f2",
+  "theme_color": "#007BFF",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "logo_compact.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["productivity", "utilities"],
+  "lang": "pt-BR"
+}
+
