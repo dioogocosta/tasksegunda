@@ -86,14 +86,17 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      flex-wrap: wrap;
     }
     .task-text {
       flex: 1;
       margin-left: 8px;
+      min-width: 200px;
     }
     .task-actions {
       display: flex;
       gap: 5px;
+      flex-shrink: 0;
     }
     .highlight {
       background: yellow;
@@ -123,6 +126,7 @@
       display: flex;
       gap: 10px;
       margin-bottom: 20px;
+      flex-wrap: wrap;
     }
     .btn {
       padding: 10px 15px;
@@ -151,6 +155,82 @@
     .btn:hover {
       opacity: 0.8;
     }
+    
+    /* Botões de ação mobile otimizados */
+    .action-btn {
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: bold;
+      color: white;
+      padding: 0;
+      margin: 2px;
+    }
+    
+    .action-btn-success {
+      background-color: #28a745;
+    }
+    
+    .action-btn-primary {
+      background-color: #007BFF;
+    }
+    
+    .action-btn-danger {
+      background-color: #dc3545;
+    }
+    
+    .action-btn-warning {
+      background-color: #ffc107;
+      color: black;
+    }
+    
+    /* Responsivo para desktop */
+    @media (min-width: 768px) {
+      .action-btn {
+        width: auto;
+        height: auto;
+        padding: 5px 10px;
+        font-size: 12px;
+        border-radius: 3px;
+      }
+      
+      .action-btn::before {
+        content: attr(data-text);
+      }
+    }
+    
+    /* Mobile - apenas ícones */
+    @media (max-width: 767px) {
+      .task-actions {
+        gap: 2px;
+      }
+      
+      .action-btn::before {
+        content: attr(data-icon);
+      }
+      
+      .task-text {
+        min-width: 150px;
+        margin-bottom: 5px;
+      }
+      
+      .accordion-content li {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .task-actions {
+        align-self: flex-end;
+        margin-top: 5px;
+      }
+    }
+    
     .task-form {
       background: #f8f9fa;
       padding: 15px;
@@ -258,6 +338,14 @@
               tarefa TEXT NOT NULL
             )
           `);
+          
+          db.run(`
+            CREATE TABLE IF NOT EXISTS tarefas_por_pessoa (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              pessoa TEXT NOT NULL,
+              tarefa TEXT NOT NULL
+            )
+          `);
         }
         
         console.log('SQLite inicializado com sucesso');
@@ -277,13 +365,34 @@
       }
     }
 
+    // Salvar tarefasPorPessoa no SQLite
+    function saveTarefasPorPessoa() {
+      if (db) {
+        try {
+          db.run("DELETE FROM tarefas_por_pessoa");
+          for (let pessoa in tarefasPorPessoa) {
+            tarefasPorPessoa[pessoa].forEach(tarefa => {
+              db.run("INSERT INTO tarefas_por_pessoa (pessoa, tarefa) VALUES (?, ?)", [pessoa, tarefa]);
+            });
+          }
+          saveDatabase();
+        } catch (error) {
+          console.error('Erro ao salvar tarefasPorPessoa no SQLite:', error);
+          localStorage.setItem("tarefasPorPessoa", JSON.stringify(tarefasPorPessoa));
+        }
+      } else {
+        localStorage.setItem("tarefasPorPessoa", JSON.stringify(tarefasPorPessoa));
+      }
+    }
+
     // Carregar dados do SQLite
     function loadFromSQLite() {
-      if (!db) return { minhasTarefas: [], favoritos: [] };
+      if (!db) return { minhasTarefas: [], favoritos: [], tarefasPorPessoa: {} };
       
       try {
         const tarefasStmt = db.prepare("SELECT * FROM minhas_tarefas");
         const favoritosStmt = db.prepare("SELECT * FROM favoritos");
+        const tarefasPorPessoaStmt = db.prepare("SELECT * FROM tarefas_por_pessoa");
         
         const minhasTarefas = [];
         while (tarefasStmt.step()) {
@@ -306,13 +415,23 @@
           });
         }
         
+        const tarefasPorPessoa = {};
+        while (tarefasPorPessoaStmt.step()) {
+          const row = tarefasPorPessoaStmt.getAsObject();
+          if (!tarefasPorPessoa[row.pessoa]) {
+            tarefasPorPessoa[row.pessoa] = [];
+          }
+          tarefasPorPessoa[row.pessoa].push(row.tarefa);
+        }
+        
         tarefasStmt.free();
         favoritosStmt.free();
+        tarefasPorPessoaStmt.free();
         
-        return { minhasTarefas, favoritos };
+        return { minhasTarefas, favoritos, tarefasPorPessoa };
       } catch (error) {
         console.error('Erro ao carregar do SQLite:', error);
-        return { minhasTarefas: [], favoritos: [] };
+        return { minhasTarefas: [], favoritos: [], tarefasPorPessoa: {} };
       }
     }
 
@@ -456,12 +575,21 @@
         const actions = document.createElement("div");
         actions.className = "task-actions";
         actions.innerHTML = `
-          <button class="btn ${tarefa.concluida ? "btn-warning" : "btn-success"}" 
+          <button class="action-btn action-btn-${tarefa.concluida ? 'warning' : 'success'}" 
+                  data-icon="${tarefa.concluida ? '↩' : '✓'}"
+                  data-text="${tarefa.concluida ? 'Reabrir' : 'Concluir'}"
                   onclick="toggleConcluida(${tarefa.id})">
-            ${tarefa.concluida ? "Reabrir" : "Concluir"}
           </button>
-          <button class="btn btn-primary" onclick="editarTarefaForm(${tarefa.id})">Editar</button>
-          <button class="btn btn-danger" onclick="excluirTarefa(${tarefa.id})">Excluir</button>
+          <button class="action-btn action-btn-primary" 
+                  data-icon="✎"
+                  data-text="Editar"
+                  onclick="editarTarefaForm(${tarefa.id})">
+          </button>
+          <button class="action-btn action-btn-danger" 
+                  data-icon="✕"
+                  data-text="Excluir"
+                  onclick="excluirTarefa(${tarefa.id})">
+          </button>
         `;
 
         const editForm = document.createElement("div");
@@ -562,6 +690,7 @@
             tarefasPorPessoa[pessoa] = tarefasPorPessoa[pessoa].filter(
               (t) => t !== tarefa
             );
+            saveTarefasPorPessoa();
           }
           renderAccordion(document.getElementById("search").value.toLowerCase());
         }
@@ -732,6 +861,9 @@
     }
 
     function exportDatabase() {
+      // Salvar tarefasPorPessoa antes do backup
+      saveTarefasPorPessoa();
+      
       if (db) {
         const data = db.export();
         const blob = new Blob([data], { type: "application/x-sqlite3" });
@@ -741,11 +873,20 @@
         a.download = "tarefas_segunda_backup.sqlite";
         a.click();
         URL.revokeObjectURL(url);
+        
+        // Mostrar confirmação
+        const status = document.getElementById('status');
+        status.textContent = 'Backup SQLite criado com sucesso!';
+        status.style.display = 'block';
+        setTimeout(() => {
+          status.style.display = 'none';
+        }, 3000);
       } else {
         alert("SQLite não está disponível. Usando backup JSON.");
         const backup = {
           minhasTarefas: minhasTarefas,
           favoritos: favoritos,
+          tarefasPorPessoa: tarefasPorPessoa,
           timestamp: new Date().toISOString()
         };
         const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
@@ -775,6 +916,7 @@
                   const data = loadFromSQLite();
                   minhasTarefas = data.minhasTarefas;
                   favoritos = data.favoritos;
+                  tarefasPorPessoa = data.tarefasPorPessoa;
                   renderAccordion();
                   alert('Banco SQLite restaurado com sucesso!');
                 }
@@ -782,8 +924,10 @@
                 const backup = JSON.parse(e.target.result);
                 minhasTarefas = backup.minhasTarefas || [];
                 favoritos = backup.favoritos || [];
+                tarefasPorPessoa = backup.tarefasPorPessoa || {};
                 saveMinhasTarefas();
                 saveFavoritos();
+                saveTarefasPorPessoa();
                 renderAccordion();
                 alert('Backup JSON restaurado com sucesso!');
               }
@@ -819,7 +963,7 @@
               line = line.trim();
               if (line.length === 0) return;
               if (
-                /^[A-ZÁÉÍÓÚÃÕÇ][a-záéíóúãõç]+(\\s+[A-ZÁÉÍÓÚÃÕÇa-záéíóúãõç]+)*$/.test(
+                /^[A-ZÁÉÍÓÚÃÕÇ][a-záéíóúãõç]+(\s+[A-ZÁÉÍÓÚÃÕÇa-záéíóúãõç]+)*$/.test(
                   line
                 ) && !line.includes(":")
               ) {
@@ -829,6 +973,9 @@
                 tarefasPorPessoa[current].push(line);
               }
             });
+            
+            // Salvar no SQLite após o upload
+            saveTarefasPorPessoa();
             renderAccordion();
           });
         };
@@ -895,6 +1042,7 @@
         const data = loadFromSQLite();
         minhasTarefas = data.minhasTarefas;
         favoritos = data.favoritos;
+        tarefasPorPessoa = data.tarefasPorPessoa;
       }
       renderAccordion();
     }
