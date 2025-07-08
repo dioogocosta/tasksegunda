@@ -7,7 +7,6 @@
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#007BFF">
   <script src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
-  <script src="sql-wasm.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -277,6 +276,10 @@
       color: white;
       border-radius: 5px;
       display: none;
+      z-index: 1000;
+    }
+    .status.error {
+      background: #dc3545;
     }
   </style>
 </head>
@@ -305,69 +308,131 @@
   <script>
     let tarefasPorPessoa = {};
     let db = null;
+    let SQL = null;
+    let sqliteReady = false;
 
-    // Inicializar SQLite
+    // Função para mostrar status
+    function showStatus(message, isError = false) {
+      const status = document.getElementById('status');
+      status.textContent = message;
+      status.className = isError ? 'status error' : 'status';
+      status.style.display = 'block';
+      setTimeout(() => {
+        status.style.display = 'none';
+      }, 3000);
+    }
+
+    // Inicializar SQLite com melhor tratamento de erros
     async function initSQLite() {
       try {
-        const SQL = await initSqlJs({
-          locateFile: file => `${file}`
+        // Carregar sql.js dinamicamente
+        if (!window.initSqlJs) {
+          await loadSqlJs();
+        }
+        
+        SQL = await window.initSqlJs({
+          locateFile: file => {
+            // Tentar diferentes caminhos para o arquivo WASM
+            if (file.endsWith('.wasm')) {
+              return 'sql-wasm.wasm';
+            }
+            return file;
+          }
         });
         
         // Tentar carregar banco existente do localStorage
         const savedDb = localStorage.getItem('sqliteDb');
         if (savedDb) {
-          const uint8Array = new Uint8Array(JSON.parse(savedDb));
-          db = new SQL.Database(uint8Array);
+          try {
+            const uint8Array = new Uint8Array(JSON.parse(savedDb));
+            db = new SQL.Database(uint8Array);
+          } catch (error) {
+            console.warn('Erro ao carregar banco salvo, criando novo:', error);
+            db = new SQL.Database();
+            createTables();
+          }
         } else {
           db = new SQL.Database();
-          // Criar tabelas
-          db.run(`
-            CREATE TABLE IF NOT EXISTS minhas_tarefas (
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              titulo TEXT NOT NULL,
-              descricao TEXT,
-              concluida INTEGER DEFAULT 0,
-              data_criacao TEXT
-            )
-          `);
-          
-          db.run(`
-            CREATE TABLE IF NOT EXISTS favoritos (
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              pessoa TEXT NOT NULL,
-              tarefa TEXT NOT NULL
-            )
-          `);
-          
-          db.run(`
-            CREATE TABLE IF NOT EXISTS tarefas_por_pessoa (
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              pessoa TEXT NOT NULL,
-              tarefa TEXT NOT NULL
-            )
-          `);
+          createTables();
         }
         
+        sqliteReady = true;
         console.log('SQLite inicializado com sucesso');
+        return true;
       } catch (error) {
         console.error('Erro ao inicializar SQLite:', error);
-        // Fallback para localStorage se SQLite falhar
+        sqliteReady = false;
+        showStatus('SQLite não disponível, usando localStorage', true);
         return false;
       }
-      return true;
+    }
+
+    // Carregar sql.js dinamicamente
+    function loadSqlJs() {
+      return new Promise((resolve, reject) => {
+        if (window.initSqlJs) {
+          resolve();
+          return;
+        }
+        
+        const script = document.createElement('script');
+        script.src = 'sql-wasm.js';
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
+    }
+
+    // Criar tabelas
+    function createTables() {
+      if (!db) return;
+      
+      try {
+        db.run(`
+          CREATE TABLE IF NOT EXISTS minhas_tarefas (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            titulo TEXT NOT NULL,
+            descricao TEXT,
+            concluida INTEGER DEFAULT 0,
+            data_criacao TEXT
+          )
+        `);
+        
+        db.run(`
+          CREATE TABLE IF NOT EXISTS favoritos (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            pessoa TEXT NOT NULL,
+            tarefa TEXT NOT NULL
+          )
+        `);
+        
+        db.run(`
+          CREATE TABLE IF NOT EXISTS tarefas_por_pessoa (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            pessoa TEXT NOT NULL,
+            tarefa TEXT NOT NULL
+          )
+        `);
+      } catch (error) {
+        console.error('Erro ao criar tabelas:', error);
+      }
     }
 
     // Salvar banco no localStorage
     function saveDatabase() {
-      if (db) {
-        const data = db.export();
-        localStorage.setItem('sqliteDb', JSON.stringify(Array.from(data)));
+      if (db && sqliteReady) {
+        try {
+          const data = db.export();
+          localStorage.setItem('sqliteDb', JSON.stringify(Array.from(data)));
+        } catch (error) {
+          console.error('Erro ao salvar banco:', error);
+        }
       }
     }
 
     // Salvar tarefasPorPessoa no SQLite
     function saveTarefasPorPessoa() {
-      if (db) {
+      if (db && sqliteReady) {
         try {
           db.run("DELETE FROM tarefas_por_pessoa");
           for (let pessoa in tarefasPorPessoa) {
@@ -387,7 +452,13 @@
 
     // Carregar dados do SQLite
     function loadFromSQLite() {
-      if (!db) return { minhasTarefas: [], favoritos: [], tarefasPorPessoa: {} };
+      if (!db || !sqliteReady) {
+        return { 
+          minhasTarefas: JSON.parse(localStorage.getItem("minhasTarefas") || "[]"),
+          favoritos: JSON.parse(localStorage.getItem("favoritos") || "[]"),
+          tarefasPorPessoa: JSON.parse(localStorage.getItem("tarefasPorPessoa") || "{}")
+        };
+      }
       
       try {
         const tarefasStmt = db.prepare("SELECT * FROM minhas_tarefas");
@@ -431,16 +502,20 @@
         return { minhasTarefas, favoritos, tarefasPorPessoa };
       } catch (error) {
         console.error('Erro ao carregar do SQLite:', error);
-        return { minhasTarefas: [], favoritos: [], tarefasPorPessoa: {} };
+        return { 
+          minhasTarefas: JSON.parse(localStorage.getItem("minhasTarefas") || "[]"),
+          favoritos: JSON.parse(localStorage.getItem("favoritos") || "[]"),
+          tarefasPorPessoa: JSON.parse(localStorage.getItem("tarefasPorPessoa") || "{}")
+        };
       }
     }
 
     // Fallback para localStorage
-    let minhasTarefas = JSON.parse(localStorage.getItem("minhasTarefas") || "[]");
-    let favoritos = JSON.parse(localStorage.getItem("favoritos") || "[]");
+    let minhasTarefas = [];
+    let favoritos = [];
 
     function saveFavoritos() {
-      if (db) {
+      if (db && sqliteReady) {
         try {
           db.run("DELETE FROM favoritos");
           favoritos.forEach(fav => {
@@ -457,7 +532,7 @@
     }
 
     function saveMinhasTarefas() {
-      if (db) {
+      if (db && sqliteReady) {
         try {
           db.run("DELETE FROM minhas_tarefas");
           minhasTarefas.forEach(tarefa => {
@@ -864,25 +939,24 @@
       // Salvar tarefasPorPessoa antes do backup
       saveTarefasPorPessoa();
       
-      if (db) {
-        const data = db.export();
-        const blob = new Blob([data], { type: "application/x-sqlite3" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "tarefas_segunda_backup.sqlite";
-        a.click();
-        URL.revokeObjectURL(url);
-        
-        // Mostrar confirmação
-        const status = document.getElementById('status');
-        status.textContent = 'Backup SQLite criado com sucesso!';
-        status.style.display = 'block';
-        setTimeout(() => {
-          status.style.display = 'none';
-        }, 3000);
+      if (db && sqliteReady) {
+        try {
+          const data = db.export();
+          const blob = new Blob([data], { type: "application/x-sqlite3" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "tarefas_segunda_backup.sqlite";
+          a.click();
+          URL.revokeObjectURL(url);
+          
+          showStatus('Backup SQLite criado com sucesso!');
+        } catch (error) {
+          console.error('Erro ao exportar banco:', error);
+          showStatus('Erro ao criar backup SQLite', true);
+        }
       } else {
-        alert("SQLite não está disponível. Usando backup JSON.");
+        showStatus("SQLite não disponível. Criando backup JSON...", true);
         const backup = {
           minhasTarefas: minhasTarefas,
           favoritos: favoritos,
@@ -899,42 +973,62 @@
       }
     }
 
-    function importDatabase() {
+    async function importDatabase() {
       const input = document.createElement('input');
       input.type = 'file';
       input.accept = '.sqlite,.json';
-      input.onchange = function(e) {
+      input.onchange = async function(e) {
         const file = e.target.files[0];
         if (file) {
           const reader = new FileReader();
-          reader.onload = function(e) {
+          reader.onload = async function(e) {
             try {
               if (file.name.endsWith('.sqlite')) {
-                if (db) {
-                  const uint8Array = new Uint8Array(e.target.result);
-                  db = new SQL.Database(uint8Array);
-                  const data = loadFromSQLite();
-                  minhasTarefas = data.minhasTarefas;
-                  favoritos = data.favoritos;
-                  tarefasPorPessoa = data.tarefasPorPessoa;
-                  renderAccordion();
-                  alert('Banco SQLite restaurado com sucesso!');
+                // Garantir que SQLite está carregado
+                if (!sqliteReady) {
+                  showStatus('Inicializando SQLite...', false);
+                  await initSQLite();
+                }
+                
+                if (sqliteReady && SQL) {
+                  try {
+                    const uint8Array = new Uint8Array(e.target.result);
+                    db = new SQL.Database(uint8Array);
+                    const data = loadFromSQLite();
+                    minhasTarefas = data.minhasTarefas;
+                    favoritos = data.favoritos;
+                    tarefasPorPessoa = data.tarefasPorPessoa;
+                    renderAccordion();
+                    showStatus('Banco SQLite restaurado com sucesso!');
+                  } catch (sqlError) {
+                    console.error('Erro ao processar arquivo SQLite:', sqlError);
+                    showStatus('Erro: Arquivo SQLite inválido ou corrompido', true);
+                  }
+                } else {
+                  showStatus('Erro: SQLite não está disponível', true);
                 }
               } else if (file.name.endsWith('.json')) {
-                const backup = JSON.parse(e.target.result);
-                minhasTarefas = backup.minhasTarefas || [];
-                favoritos = backup.favoritos || [];
-                tarefasPorPessoa = backup.tarefasPorPessoa || {};
-                saveMinhasTarefas();
-                saveFavoritos();
-                saveTarefasPorPessoa();
-                renderAccordion();
-                alert('Backup JSON restaurado com sucesso!');
+                try {
+                  const backup = JSON.parse(e.target.result);
+                  minhasTarefas = backup.minhasTarefas || [];
+                  favoritos = backup.favoritos || [];
+                  tarefasPorPessoa = backup.tarefasPorPessoa || {};
+                  saveMinhasTarefas();
+                  saveFavoritos();
+                  saveTarefasPorPessoa();
+                  renderAccordion();
+                  showStatus('Backup JSON restaurado com sucesso!');
+                } catch (jsonError) {
+                  console.error('Erro ao processar arquivo JSON:', jsonError);
+                  showStatus('Erro: Arquivo JSON inválido', true);
+                }
               }
             } catch (error) {
-              alert('Erro ao restaurar backup: ' + error.message);
+              console.error('Erro geral ao restaurar backup:', error);
+              showStatus('Erro ao restaurar backup: ' + error.message, true);
             }
           };
+          
           if (file.name.endsWith('.sqlite')) {
             reader.readAsArrayBuffer(file);
           } else {
@@ -977,6 +1071,10 @@
             // Salvar no SQLite após o upload
             saveTarefasPorPessoa();
             renderAccordion();
+            showStatus('Documento carregado com sucesso!');
+          }).catch(error => {
+            console.error('Erro ao processar documento:', error);
+            showStatus('Erro ao processar documento Word', true);
           });
         };
         reader.readAsArrayBuffer(file);
@@ -1022,10 +1120,7 @@
         deferredPrompt.userChoice.then((choiceResult) => {
           if (choiceResult.outcome === 'accepted') {
             console.log('PWA instalado');
-            document.getElementById('status').style.display = 'block';
-            setTimeout(() => {
-              document.getElementById('status').style.display = 'none';
-            }, 3000);
+            showStatus('PWA instalado com sucesso!');
           }
           deferredPrompt = null;
           installBtn.remove();
@@ -1037,13 +1132,23 @@
 
     // Inicializar aplicação
     async function init() {
-      const sqliteReady = await initSQLite();
-      if (sqliteReady) {
+      showStatus('Inicializando aplicação...', false);
+      
+      const sqliteInitialized = await initSQLite();
+      if (sqliteInitialized) {
         const data = loadFromSQLite();
         minhasTarefas = data.minhasTarefas;
         favoritos = data.favoritos;
         tarefasPorPessoa = data.tarefasPorPessoa;
+        showStatus('SQLite carregado com sucesso!');
+      } else {
+        // Carregar do localStorage como fallback
+        minhasTarefas = JSON.parse(localStorage.getItem("minhasTarefas") || "[]");
+        favoritos = JSON.parse(localStorage.getItem("favoritos") || "[]");
+        tarefasPorPessoa = JSON.parse(localStorage.getItem("tarefasPorPessoa") || "{}");
+        showStatus('Usando localStorage como backup', true);
       }
+      
       renderAccordion();
     }
 
