@@ -13,6 +13,9 @@
       background: #f2f2f2;
       margin: 0;
       padding: 20px;
+      min-height: 100vh;
+      position: relative;
+      padding-bottom: 60px;
     }
     .header {
       display: flex;
@@ -39,26 +42,27 @@
       gap: 10px;
       margin-bottom: 20px;
       flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
     }
-    #upload, #search {
+    #search {
       padding: 10px;
       font-size: 16px;
       border: 1px solid #ddd;
       border-radius: 5px;
-    }
-    #upload {
       flex: 1;
+      max-width: 400px;
       min-width: 200px;
-    }
-    #search {
-      flex: 2;
-      min-width: 300px;
     }
     .accordion {
       background-color: #fff;
       border-radius: 5px;
       margin-bottom: 10px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: relative;
+    }
+    .accordion.dragging {
+      opacity: 0.5;
     }
     .accordion-header {
       background-color: #007BFF;
@@ -70,6 +74,64 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      position: relative;
+    }
+    .accordion-header-content {
+      display: flex;
+      align-items: center;
+      flex: 1;
+    }
+    .drag-handle {
+      cursor: move;
+      margin-right: 10px;
+      padding: 5px;
+      border-radius: 3px;
+      background: rgba(255,255,255,0.2);
+      font-size: 14px;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+    }
+    .drag-handle:hover {
+      background: rgba(255,255,255,0.3);
+    }
+    .accordion-title {
+      flex: 1;
+      margin-right: 10px;
+    }
+    .accordion-title input {
+      background: transparent;
+      border: none;
+      color: white;
+      font-weight: bold;
+      font-size: inherit;
+      width: 100%;
+      outline: none;
+      display: none;
+    }
+    .accordion-title input::placeholder {
+      color: rgba(255,255,255,0.7);
+    }
+    .edit-btn {
+      background: transparent;
+      border: none;
+      color: white;
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 3px;
+      font-size: 14px;
+      margin-right: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+    }
+    .edit-btn:hover {
+      background: rgba(255,255,255,0.2);
     }
     .accordion-content {
       display: none;
@@ -86,6 +148,33 @@
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
+      padding: 8px;
+      border-radius: 3px;
+      position: relative;
+    }
+    .accordion-content li:hover {
+      background-color: #f8f9fa;
+    }
+    .accordion-content li.dragging {
+      opacity: 0.5;
+    }
+    .task-drag-handle {
+      cursor: move;
+      margin-right: 8px;
+      padding: 2px 5px;
+      border-radius: 3px;
+      background: #e9ecef;
+      font-size: 12px;
+      color: #666;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+    }
+    .task-drag-handle:hover {
+      background: #dee2e6;
     }
     .task-text {
       flex: 1;
@@ -149,6 +238,10 @@
     }
     .btn-danger {
       background-color: #dc3545;
+      color: white;
+    }
+    .btn-info {
+      background-color: #17a2b8;
       color: white;
     }
     .btn:hover {
@@ -281,6 +374,55 @@
     .status.error {
       background: #dc3545;
     }
+    
+    /* Drag and Drop styles */
+    .drop-zone {
+      min-height: 50px;
+      border: 2px dashed #ccc;
+      border-radius: 5px;
+      margin: 10px 0;
+      padding: 10px;
+      text-align: center;
+      color: #666;
+      display: none;
+    }
+    .drop-zone.active {
+      display: block;
+      border-color: #007BFF;
+      background-color: #f0f8ff;
+    }
+    .drop-zone.hover {
+      border-color: #28a745;
+      background-color: #f0fff0;
+    }
+    
+    /* Linha de posição para drag and drop */
+    .drop-indicator {
+      height: 3px;
+      background-color: #007BFF;
+      margin: 5px 0;
+      border-radius: 2px;
+      display: none;
+      opacity: 0.8;
+    }
+    .drop-indicator.active {
+      display: block;
+    }
+    
+    /* Rodapé */
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #f8f9fa;
+      border-top: 1px solid #dee2e6;
+      padding: 10px 20px;
+      text-align: center;
+      font-size: 12px;
+      color: #6c757d;
+      z-index: 100;
+    }
   </style>
 </head>
 <body>
@@ -292,24 +434,34 @@
   </div>
   
   <div class="controls">
-    <input type="file" id="upload" accept=".docx" class="btn btn-primary">
     <input type="text" id="search" placeholder="Buscar tarefas...">
   </div>
   
   <div id="export-buttons">
-    <button class="btn btn-primary" onclick="exportFavoritosJSON()">Exportar Favoritos (JSON)</button>
+    <input type="file" id="upload" accept=".docx" class="btn btn-primary" style="display: none;">
+    <button class="btn btn-info" onclick="document.getElementById('upload').click()">📄 Carregar Documento Word</button>
+    <button class="btn btn-primary" onclick="exportFavoritosJSON()">Exportar Favoritos + Minhas Tarefas (JSON)</button>
     <button class="btn btn-primary" onclick="exportFavoritosCSV()">Exportar Favoritos (CSV)</button>
     <button class="btn btn-success" onclick="exportDatabase()">Backup SQLite</button>
     <button class="btn btn-warning" onclick="importDatabase()">Restaurar SQLite</button>
+    <button class="btn btn-danger" onclick="clearWordData()">🗑️ Limpar Dados do Word</button>
   </div>
 
   <div id="accordion-container"></div>
+
+  <div class="footer">
+    Tarefas Segunda v1.0.5 - 08/07/2025
+  </div>
 
   <script>
     let tarefasPorPessoa = {};
     let db = null;
     let SQL = null;
     let sqliteReady = false;
+    let accordionOrder = ['minhas-tarefas', 'lista-favoritos']; // Ordem dos colapses
+    let draggedElement = null;
+    let draggedType = null; // 'accordion' ou 'task'
+    let draggedIndex = -1; // Para ordenação de tarefas
 
     // Função para mostrar status
     function showStatus(message, isError = false) {
@@ -325,14 +477,12 @@
     // Inicializar SQLite com melhor tratamento de erros
     async function initSQLite() {
       try {
-        // Carregar sql.js dinamicamente
         if (!window.initSqlJs) {
           await loadSqlJs();
         }
         
         SQL = await window.initSqlJs({
           locateFile: file => {
-            // Tentar diferentes caminhos para o arquivo WASM
             if (file.endsWith('.wasm')) {
               return 'sql-wasm.wasm';
             }
@@ -340,7 +490,6 @@
           }
         });
         
-        // Tentar carregar banco existente do localStorage
         const savedDb = localStorage.getItem('sqliteDb');
         if (savedDb) {
           try {
@@ -367,7 +516,6 @@
       }
     }
 
-    // Carregar sql.js dinamicamente
     function loadSqlJs() {
       return new Promise((resolve, reject) => {
         if (window.initSqlJs) {
@@ -383,7 +531,6 @@
       });
     }
 
-    // Criar tabelas
     function createTables() {
       if (!db) return;
       
@@ -394,7 +541,8 @@
             titulo TEXT NOT NULL,
             descricao TEXT,
             concluida INTEGER DEFAULT 0,
-            data_criacao TEXT
+            data_criacao TEXT,
+            ordem INTEGER DEFAULT 0
           )
         `);
         
@@ -413,12 +561,19 @@
             tarefa TEXT NOT NULL
           )
         `);
+        
+        db.run(`
+          CREATE TABLE IF NOT EXISTS accordion_order (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            accordion_id TEXT NOT NULL,
+            position INTEGER NOT NULL
+          )
+        `);
       } catch (error) {
         console.error('Erro ao criar tabelas:', error);
       }
     }
 
-    // Salvar banco no localStorage
     function saveDatabase() {
       if (db && sqliteReady) {
         try {
@@ -430,7 +585,6 @@
       }
     }
 
-    // Salvar tarefasPorPessoa no SQLite
     function saveTarefasPorPessoa() {
       if (db && sqliteReady) {
         try {
@@ -450,20 +604,38 @@
       }
     }
 
-    // Carregar dados do SQLite
+    function saveAccordionOrder() {
+      if (db && sqliteReady) {
+        try {
+          db.run("DELETE FROM accordion_order");
+          accordionOrder.forEach((id, index) => {
+            db.run("INSERT INTO accordion_order (accordion_id, position) VALUES (?, ?)", [id, index]);
+          });
+          saveDatabase();
+        } catch (error) {
+          console.error('Erro ao salvar ordem dos acordeões:', error);
+          localStorage.setItem("accordionOrder", JSON.stringify(accordionOrder));
+        }
+      } else {
+        localStorage.setItem("accordionOrder", JSON.stringify(accordionOrder));
+      }
+    }
+
     function loadFromSQLite() {
       if (!db || !sqliteReady) {
         return { 
           minhasTarefas: JSON.parse(localStorage.getItem("minhasTarefas") || "[]"),
           favoritos: JSON.parse(localStorage.getItem("favoritos") || "[]"),
-          tarefasPorPessoa: JSON.parse(localStorage.getItem("tarefasPorPessoa") || "{}")
+          tarefasPorPessoa: JSON.parse(localStorage.getItem("tarefasPorPessoa") || "{}"),
+          accordionOrder: JSON.parse(localStorage.getItem("accordionOrder") || '["minhas-tarefas", "lista-favoritos"]')
         };
       }
       
       try {
-        const tarefasStmt = db.prepare("SELECT * FROM minhas_tarefas");
+        const tarefasStmt = db.prepare("SELECT * FROM minhas_tarefas ORDER BY ordem ASC");
         const favoritosStmt = db.prepare("SELECT * FROM favoritos");
         const tarefasPorPessoaStmt = db.prepare("SELECT * FROM tarefas_por_pessoa");
+        const orderStmt = db.prepare("SELECT * FROM accordion_order ORDER BY position");
         
         const minhasTarefas = [];
         while (tarefasStmt.step()) {
@@ -473,7 +645,8 @@
             titulo: row.titulo,
             descricao: row.descricao,
             concluida: row.concluida === 1,
-            dataCreacao: row.data_criacao
+            dataCreacao: row.data_criacao,
+            ordem: row.ordem || 0
           });
         }
         
@@ -495,22 +668,34 @@
           tarefasPorPessoa[row.pessoa].push(row.tarefa);
         }
         
+        const accordionOrder = [];
+        while (orderStmt.step()) {
+          const row = orderStmt.getAsObject();
+          accordionOrder.push(row.accordion_id);
+        }
+        
+        // Se não há ordem salva, usar padrão
+        if (accordionOrder.length === 0) {
+          accordionOrder.push('minhas-tarefas', 'lista-favoritos');
+        }
+        
         tarefasStmt.free();
         favoritosStmt.free();
         tarefasPorPessoaStmt.free();
+        orderStmt.free();
         
-        return { minhasTarefas, favoritos, tarefasPorPessoa };
+        return { minhasTarefas, favoritos, tarefasPorPessoa, accordionOrder };
       } catch (error) {
         console.error('Erro ao carregar do SQLite:', error);
         return { 
           minhasTarefas: JSON.parse(localStorage.getItem("minhasTarefas") || "[]"),
           favoritos: JSON.parse(localStorage.getItem("favoritos") || "[]"),
-          tarefasPorPessoa: JSON.parse(localStorage.getItem("tarefasPorPessoa") || "{}")
+          tarefasPorPessoa: JSON.parse(localStorage.getItem("tarefasPorPessoa") || "{}"),
+          accordionOrder: JSON.parse(localStorage.getItem("accordionOrder") || '["minhas-tarefas", "lista-favoritos"]')
         };
       }
     }
 
-    // Fallback para localStorage
     let minhasTarefas = [];
     let favoritos = [];
 
@@ -535,9 +720,9 @@
       if (db && sqliteReady) {
         try {
           db.run("DELETE FROM minhas_tarefas");
-          minhasTarefas.forEach(tarefa => {
-            db.run("INSERT INTO minhas_tarefas (id, titulo, descricao, concluida, data_criacao) VALUES (?, ?, ?, ?, ?)", 
-              [tarefa.id, tarefa.titulo, tarefa.descricao, tarefa.concluida ? 1 : 0, tarefa.dataCreacao]);
+          minhasTarefas.forEach((tarefa, index) => {
+            db.run("INSERT INTO minhas_tarefas (id, titulo, descricao, concluida, data_criacao, ordem) VALUES (?, ?, ?, ?, ?, ?)", 
+              [tarefa.id, tarefa.titulo, tarefa.descricao, tarefa.concluida ? 1 : 0, tarefa.dataCreacao, index]);
           });
           saveDatabase();
         } catch (error) {
@@ -556,6 +741,7 @@
         descricao: descricao,
         concluida: false,
         dataCreacao: new Date().toLocaleDateString("pt-BR"),
+        ordem: minhasTarefas.length
       };
       minhasTarefas.push(novaTarefa);
       saveMinhasTarefas();
@@ -575,6 +761,10 @@
     function excluirTarefa(id) {
       if (confirm("Tem certeza que deseja excluir esta tarefa?")) {
         minhasTarefas = minhasTarefas.filter((t) => t.id !== id);
+        // Reordenar
+        minhasTarefas.forEach((tarefa, index) => {
+          tarefa.ordem = index;
+        });
         saveMinhasTarefas();
         renderAccordion(document.getElementById("search").value.toLowerCase());
       }
@@ -586,6 +776,303 @@
         tarefa.concluida = !tarefa.concluida;
         saveMinhasTarefas();
         renderAccordion(document.getElementById("search").value.toLowerCase());
+      }
+    }
+
+    function editAccordionTitle(accordionId) {
+      const titleSpan = document.querySelector(`[data-accordion-id="${accordionId}"] .accordion-title span`);
+      const titleInput = document.querySelector(`[data-accordion-id="${accordionId}"] .accordion-title input`);
+      
+      if (titleSpan && titleInput) {
+        titleSpan.style.display = 'none';
+        titleInput.style.display = 'block';
+        titleInput.value = titleSpan.textContent;
+        titleInput.focus();
+        titleInput.select();
+      }
+    }
+
+    function saveAccordionTitle(accordionId, newTitle) {
+      if (newTitle.trim() && newTitle !== accordionId) {
+        renameAccordion(accordionId, newTitle.trim());
+      } else {
+        // Cancelar edição
+        const titleSpan = document.querySelector(`[data-accordion-id="${accordionId}"] .accordion-title span`);
+        const titleInput = document.querySelector(`[data-accordion-id="${accordionId}"] .accordion-title input`);
+        
+        if (titleSpan && titleInput) {
+          titleInput.style.display = 'none';
+          titleSpan.style.display = 'block';
+        }
+      }
+    }
+
+    function renameAccordion(oldName, newName) {
+      if (tarefasPorPessoa[oldName]) {
+        tarefasPorPessoa[newName] = tarefasPorPessoa[oldName];
+        delete tarefasPorPessoa[oldName];
+        
+        // Atualizar favoritos
+        favoritos.forEach(fav => {
+          if (fav.pessoa === oldName) {
+            fav.pessoa = newName;
+          }
+        });
+        
+        // Atualizar ordem dos acordeões
+        const index = accordionOrder.indexOf(oldName);
+        if (index !== -1) {
+          accordionOrder[index] = newName;
+        }
+        
+        saveTarefasPorPessoa();
+        saveFavoritos();
+        saveAccordionOrder();
+        renderAccordion(document.getElementById("search").value.toLowerCase());
+      }
+    }
+
+    // Drag and Drop para acordeões
+    function handleAccordionDragStart(e) {
+      draggedElement = e.target.closest('.accordion');
+      draggedType = 'accordion';
+      draggedElement.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/html', draggedElement.outerHTML);
+    }
+
+    function handleAccordionDragEnd(e) {
+      if (draggedElement) {
+        draggedElement.classList.remove('dragging');
+        draggedElement = null;
+        draggedType = null;
+      }
+      // Remover todos os indicadores
+      document.querySelectorAll('.drop-indicator').forEach(indicator => {
+        indicator.classList.remove('active');
+      });
+    }
+
+    function handleAccordionDragOver(e) {
+      e.preventDefault();
+      if (draggedType !== 'accordion') return;
+      
+      const targetAccordion = e.target.closest('.accordion');
+      if (!targetAccordion || targetAccordion === draggedElement) return;
+      
+      // Remover indicadores anteriores
+      document.querySelectorAll('.drop-indicator').forEach(indicator => {
+        indicator.classList.remove('active');
+      });
+      
+      // Determinar posição (acima ou abaixo)
+      const rect = targetAccordion.getBoundingClientRect();
+      const midY = rect.top + rect.height / 2;
+      const isAbove = e.clientY < midY;
+      
+      // Mostrar indicador
+      const indicator = isAbove ? 
+        targetAccordion.querySelector('.drop-indicator-top') :
+        targetAccordion.querySelector('.drop-indicator-bottom');
+      
+      if (indicator) {
+        indicator.classList.add('active');
+      }
+    }
+
+    function handleAccordionDrop(e) {
+      e.preventDefault();
+      if (draggedType !== 'accordion') return;
+      
+      const targetAccordion = e.target.closest('.accordion');
+      if (!targetAccordion || targetAccordion === draggedElement) return;
+      
+      const draggedId = draggedElement.getAttribute('data-accordion-id');
+      const targetId = targetAccordion.getAttribute('data-accordion-id');
+      
+      // Determinar posição
+      const rect = targetAccordion.getBoundingClientRect();
+      const midY = rect.top + rect.height / 2;
+      const isAbove = e.clientY < midY;
+      
+      const draggedIndex = accordionOrder.indexOf(draggedId);
+      const targetIndex = accordionOrder.indexOf(targetId);
+      
+      if (draggedIndex !== -1 && targetIndex !== -1) {
+        accordionOrder.splice(draggedIndex, 1);
+        const newIndex = isAbove ? targetIndex : targetIndex + 1;
+        accordionOrder.splice(newIndex, 0, draggedId);
+        saveAccordionOrder();
+        renderAccordion(document.getElementById("search").value.toLowerCase());
+      }
+    }
+
+    // Drag and Drop para tarefas
+    function handleTaskDragStart(e) {
+      draggedElement = e.target.closest('li');
+      draggedType = 'task';
+      draggedIndex = Array.from(draggedElement.parentNode.children).indexOf(draggedElement);
+      draggedElement.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      
+      // Mostrar zonas de drop
+      document.querySelectorAll('.drop-zone').forEach(zone => {
+        zone.classList.add('active');
+      });
+    }
+
+    function handleTaskDragEnd(e) {
+      if (draggedElement) {
+        draggedElement.classList.remove('dragging');
+        draggedElement = null;
+        draggedType = null;
+        draggedIndex = -1;
+      }
+      // Esconder zonas de drop
+      document.querySelectorAll('.drop-zone').forEach(zone => {
+        zone.classList.remove('active', 'hover');
+      });
+      // Remover indicadores
+      document.querySelectorAll('.drop-indicator').forEach(indicator => {
+        indicator.classList.remove('active');
+      });
+    }
+
+    function handleTaskDragOver(e) {
+      e.preventDefault();
+      if (draggedType !== 'task') return;
+      
+      const targetLi = e.target.closest('li');
+      if (!targetLi || targetLi === draggedElement) return;
+      
+      // Remover indicadores anteriores
+      document.querySelectorAll('.drop-indicator').forEach(indicator => {
+        indicator.classList.remove('active');
+      });
+      
+      // Determinar posição (acima ou abaixo)
+      const rect = targetLi.getBoundingClientRect();
+      const midY = rect.top + rect.height / 2;
+      const isAbove = e.clientY < midY;
+      
+      // Mostrar indicador
+      const indicator = isAbove ? 
+        targetLi.querySelector('.drop-indicator-top') :
+        targetLi.querySelector('.drop-indicator-bottom');
+      
+      if (indicator) {
+        indicator.classList.add('active');
+      }
+    }
+
+    function handleTaskReorder(e) {
+      e.preventDefault();
+      if (draggedType !== 'task') return;
+      
+      const targetLi = e.target.closest('li');
+      if (!targetLi || targetLi === draggedElement) return;
+      
+      const sourceAccordion = draggedElement.getAttribute('data-source');
+      const targetAccordion = targetLi.getAttribute('data-source');
+      
+      // Se for reordenação dentro de "Minhas Tarefas"
+      if (sourceAccordion === 'minhas-tarefas' && targetAccordion === 'minhas-tarefas') {
+        const draggedTaskId = parseInt(draggedElement.getAttribute('data-task-id'));
+        const targetIndex = Array.from(targetLi.parentNode.children).indexOf(targetLi);
+        
+        // Determinar posição
+        const rect = targetLi.getBoundingClientRect();
+        const midY = rect.top + rect.height / 2;
+        const isAbove = e.clientY < midY;
+        
+        const newIndex = isAbove ? targetIndex : targetIndex + 1;
+        
+        // Reordenar array
+        const draggedTask = minhasTarefas.find(t => t.id === draggedTaskId);
+        if (draggedTask) {
+          minhasTarefas.splice(draggedIndex, 1);
+          minhasTarefas.splice(newIndex > draggedIndex ? newIndex - 1 : newIndex, 0, draggedTask);
+          
+          // Atualizar ordem
+          minhasTarefas.forEach((tarefa, index) => {
+            tarefa.ordem = index;
+          });
+          
+          saveMinhasTarefas();
+          renderAccordion(document.getElementById("search").value.toLowerCase());
+          showStatus('Tarefa reordenada com sucesso!');
+        }
+      }
+    }
+
+    function handleDropZoneDragOver(e) {
+      e.preventDefault();
+      e.target.classList.add('hover');
+    }
+
+    function handleTaskDrop(e, targetAccordion) {
+      e.preventDefault();
+      e.target.classList.remove('hover');
+      
+      if (draggedType !== 'task') return;
+      
+      try {
+        const taskId = draggedElement.getAttribute('data-task-id');
+        const source = draggedElement.getAttribute('data-source');
+        
+        if (source === 'minhas-tarefas' && targetAccordion !== 'minhas-tarefas') {
+          // Mover de Minhas Tarefas para outro acordeão
+          const tarefa = minhasTarefas.find(t => t.id == taskId);
+          if (tarefa) {
+            if (targetAccordion === 'lista-favoritos') {
+              favoritos.push({pessoa: 'Minhas Tarefas', tarefa: tarefa.titulo});
+              saveFavoritos();
+            } else {
+              if (!tarefasPorPessoa[targetAccordion]) {
+                tarefasPorPessoa[targetAccordion] = [];
+              }
+              tarefasPorPessoa[targetAccordion].push(tarefa.titulo);
+              saveTarefasPorPessoa();
+            }
+            minhasTarefas = minhasTarefas.filter(t => t.id != taskId);
+            // Reordenar
+            minhasTarefas.forEach((tarefa, index) => {
+              tarefa.ordem = index;
+            });
+            saveMinhasTarefas();
+          }
+        } else if (source !== 'minhas-tarefas' && targetAccordion === 'minhas-tarefas') {
+          // Mover de outro acordeão para Minhas Tarefas
+          let tarefaTexto = '';
+          
+          if (source === 'lista-favoritos') {
+            const fav = favoritos.find(f => f.tarefa === taskId);
+            if (fav) {
+              tarefaTexto = fav.tarefa;
+              favoritos = favoritos.filter(f => f.tarefa !== taskId);
+              saveFavoritos();
+            }
+          } else {
+            if (tarefasPorPessoa[source]) {
+              const index = tarefasPorPessoa[source].indexOf(taskId);
+              if (index !== -1) {
+                tarefaTexto = taskId;
+                tarefasPorPessoa[source].splice(index, 1);
+                saveTarefasPorPessoa();
+              }
+            }
+          }
+          
+          if (tarefaTexto) {
+            adicionarTarefa(tarefaTexto, `Movida de ${source}`);
+          }
+        }
+        
+        renderAccordion(document.getElementById("search").value.toLowerCase());
+        showStatus('Tarefa movida com sucesso!');
+      } catch (error) {
+        console.error('Erro ao mover tarefa:', error);
+        showStatus('Erro ao mover tarefa', true);
       }
     }
 
@@ -602,13 +1089,34 @@
 
       const acc = document.createElement("div");
       acc.className = "accordion";
+      acc.setAttribute('data-accordion-id', 'minhas-tarefas');
+
+      // Indicadores de drop para acordeão
+      const dropIndicatorTop = document.createElement("div");
+      dropIndicatorTop.className = "drop-indicator drop-indicator-top";
+      
+      const dropIndicatorBottom = document.createElement("div");
+      dropIndicatorBottom.className = "drop-indicator drop-indicator-bottom";
 
       const header = document.createElement("div");
       header.className = "accordion-header";
-      header.innerHTML = `
-        <span>Minhas Tarefas (${filteredMinhasTarefas.length})</span>
-        <button class="btn btn-success" onclick="toggleTaskForm()">+ Nova Tarefa</button>
-      `;
+      
+      const headerContent = document.createElement("div");
+      headerContent.className = "accordion-header-content";
+      
+      const title = document.createElement("div");
+      title.className = "accordion-title";
+      title.innerHTML = `<span>Minhas Tarefas (${filteredMinhasTarefas.length})</span>`;
+      
+      const newTaskBtn = document.createElement("button");
+      newTaskBtn.className = "btn btn-success";
+      newTaskBtn.textContent = "+ Nova Tarefa";
+      newTaskBtn.onclick = toggleTaskForm;
+      
+      headerContent.appendChild(title);
+      header.appendChild(headerContent);
+      header.appendChild(newTaskBtn);
+      
       header.onclick = function (e) {
         if (e.target.tagName !== "BUTTON") {
           this.nextElementSibling.style.display = this.nextElementSibling.style.display === "block" ? "none" : "block";
@@ -632,12 +1140,37 @@
         </div>
       `;
 
+      const dropZone = document.createElement("div");
+      dropZone.className = "drop-zone";
+      dropZone.innerHTML = "Solte tarefas aqui para mover para Minhas Tarefas";
+      dropZone.addEventListener('dragover', handleDropZoneDragOver);
+      dropZone.addEventListener('drop', (e) => handleTaskDrop(e, 'minhas-tarefas'));
+
       const ul = document.createElement("ul");
+
+      // Ordenar tarefas por ordem
+      filteredMinhasTarefas.sort((a, b) => (a.ordem || 0) - (b.ordem || 0));
 
       filteredMinhasTarefas.forEach((tarefa) => {
         const li = document.createElement("li");
         li.style.textDecoration = tarefa.concluida ? "line-through" : "none";
         li.style.opacity = tarefa.concluida ? "0.6" : "1";
+        li.setAttribute('data-task-id', tarefa.id);
+        li.setAttribute('data-source', 'minhas-tarefas');
+
+        // Indicadores de drop para tarefa
+        const taskDropIndicatorTop = document.createElement("div");
+        taskDropIndicatorTop.className = "drop-indicator drop-indicator-top";
+        
+        const taskDropIndicatorBottom = document.createElement("div");
+        taskDropIndicatorBottom.className = "drop-indicator drop-indicator-bottom";
+
+        const dragHandle = document.createElement("div");
+        dragHandle.className = "task-drag-handle";
+        dragHandle.innerHTML = "⋮⋮";
+        dragHandle.draggable = true;
+        dragHandle.addEventListener('dragstart', handleTaskDragStart);
+        dragHandle.addEventListener('dragend', handleTaskDragEnd);
 
         const taskContent = document.createElement("div");
         taskContent.className = "task-text";
@@ -679,16 +1212,26 @@
           </div>
         `;
 
+        li.appendChild(taskDropIndicatorTop);
+        li.appendChild(dragHandle);
         li.appendChild(taskContent);
         li.appendChild(actions);
         li.appendChild(editForm);
+        li.appendChild(taskDropIndicatorBottom);
+        
+        li.addEventListener('dragover', handleTaskDragOver);
+        li.addEventListener('drop', handleTaskReorder);
         ul.appendChild(li);
       });
 
       content.appendChild(taskForm);
+      content.appendChild(dropZone);
       content.appendChild(ul);
+      
+      acc.appendChild(dropIndicatorTop);
       acc.appendChild(header);
       acc.appendChild(content);
+      acc.appendChild(dropIndicatorBottom);
 
       return acc;
     }
@@ -794,95 +1337,255 @@
       const container = document.getElementById("accordion-container");
       container.innerHTML = "";
 
-      const minhasTarefasAccordion = createMinhasTarefasAccordion(filtro);
-      if (minhasTarefasAccordion) {
-        container.appendChild(minhasTarefasAccordion);
-      }
+      // Renderizar acordeões na ordem salva
+      accordionOrder.forEach(accordionId => {
+        if (accordionId === 'minhas-tarefas') {
+          const minhasTarefasAccordion = createMinhasTarefasAccordion(filtro);
+          if (minhasTarefasAccordion) {
+            container.appendChild(minhasTarefasAccordion);
+          }
+        } else if (accordionId === 'lista-favoritos') {
+          const favoritosFiltrados = favoritos.filter(
+            (f) =>
+              f.tarefa.toLowerCase().includes(filtro) ||
+              f.pessoa.toLowerCase().includes(filtro)
+          );
+          if (favoritosFiltrados.length > 0 || !filtro) {
+            const acc = document.createElement("div");
+            acc.className = "accordion";
+            acc.setAttribute('data-accordion-id', 'lista-favoritos');
+            
+            // Indicadores de drop
+            const dropIndicatorTop = document.createElement("div");
+            dropIndicatorTop.className = "drop-indicator drop-indicator-top";
+            
+            const dropIndicatorBottom = document.createElement("div");
+            dropIndicatorBottom.className = "drop-indicator drop-indicator-bottom";
+            
+            const header = document.createElement("div");
+            header.className = "accordion-header";
+            
+            const headerContent = document.createElement("div");
+            headerContent.className = "accordion-header-content";
+            
+            const title = document.createElement("div");
+            title.className = "accordion-title";
+            title.innerHTML = `<span>Lista de Favoritos</span>`;
+            
+            headerContent.appendChild(title);
+            header.appendChild(headerContent);
+            
+            header.onclick = function (e) {
+              if (e.target.tagName !== "BUTTON") {
+                this.nextElementSibling.style.display = this.nextElementSibling.style.display === "block" ? "none" : "block";
+              }
+            };
+            
+            const content = document.createElement("div");
+            content.className = "accordion-content";
+            
+            const dropZone = document.createElement("div");
+            dropZone.className = "drop-zone";
+            dropZone.innerHTML = "Solte tarefas aqui para adicionar aos favoritos";
+            dropZone.addEventListener('dragover', handleDropZoneDragOver);
+            dropZone.addEventListener('drop', (e) => handleTaskDrop(e, 'lista-favoritos'));
+            
+            const ul = document.createElement("ul");
+            favoritosFiltrados.forEach(({ pessoa, tarefa }) => {
+              const li = document.createElement("li");
+              li.setAttribute('data-task-id', tarefa);
+              li.setAttribute('data-source', 'lista-favoritos');
+              
+              // Indicadores de drop para tarefa
+              const taskDropIndicatorTop = document.createElement("div");
+              taskDropIndicatorTop.className = "drop-indicator drop-indicator-top";
+              
+              const taskDropIndicatorBottom = document.createElement("div");
+              taskDropIndicatorBottom.className = "drop-indicator drop-indicator-bottom";
 
-      const favoritosFiltrados = favoritos.filter(
-        (f) =>
-          f.tarefa.toLowerCase().includes(filtro) ||
-          f.pessoa.toLowerCase().includes(filtro)
-      );
-      if (favoritosFiltrados.length > 0 || !filtro) {
-        const acc = document.createElement("div");
-        acc.className = "accordion";
-        const header = document.createElement("div");
-        header.className = "accordion-header";
-        header.textContent = "Lista de Favoritos";
-        header.onclick = function () {
-          this.nextElementSibling.style.display = this.nextElementSibling.style.display === "block" ? "none" : "block";
-        };
-        const content = document.createElement("div");
-        content.className = "accordion-content";
-        const ul = document.createElement("ul");
-        favoritosFiltrados.forEach(({ pessoa, tarefa }) => {
-          const li = document.createElement("li");
-          const star = createStar(pessoa, tarefa);
-          const trash = createTrashIcon(pessoa, tarefa, "favoritos");
-          const confirmIcon = createConfirmIcon(pessoa, tarefa);
-          const taskText = document.createElement("div");
-          taskText.className = "task-text";
-          taskText.textContent = tarefa;
-          li.appendChild(star);
-          li.appendChild(trash);
-          li.appendChild(confirmIcon);
-          li.appendChild(taskText);
-          ul.appendChild(li);
-        });
-        content.appendChild(ul);
-        acc.appendChild(header);
-        acc.appendChild(content);
-        container.appendChild(acc);
-      }
-
-      for (let pessoa in tarefasPorPessoa) {
-        const tarefasFiltradas = tarefasPorPessoa[pessoa].filter(
-          (t) => t.toLowerCase().includes(filtro)
-        );
-        if (tarefasFiltradas.length > 0 || pessoa.toLowerCase().includes(filtro)) {
-          const acc = document.createElement("div");
-          acc.className = "accordion";
-
-          const header = document.createElement("div");
-          header.className = "accordion-header";
-          header.textContent = pessoa;
-          header.onclick = function () {
-            this.nextElementSibling.style.display = this.nextElementSibling.style.display === "block" ? "none" : "block";
-          };
-
-          const content = document.createElement("div");
-          content.className = "accordion-content";
-          const ul = document.createElement("ul");
-          tarefasFiltradas.forEach((tarefa) => {
-            const li = document.createElement("li");
-            const star = createStar(pessoa, tarefa);
-            const trash = createTrashIcon(pessoa, tarefa, "tarefasPorPessoa");
-            const taskText = document.createElement("div");
-            taskText.className = "task-text";
-
-            if (filtro) {
-              const regex = new RegExp(filtro, "gi");
-              const textoDestacado = tarefa.replace(
-                regex,
-                (match) => 
-                  `<span class="highlight">${match}</span>`
-              );
-              taskText.innerHTML = textoDestacado;
-            } else {
+              const dragHandle = document.createElement("div");
+              dragHandle.className = "task-drag-handle";
+              dragHandle.innerHTML = "⋮⋮";
+              dragHandle.draggable = true;
+              dragHandle.addEventListener('dragstart', handleTaskDragStart);
+              dragHandle.addEventListener('dragend', handleTaskDragEnd);
+              
+              const star = createStar(pessoa, tarefa);
+              const trash = createTrashIcon(pessoa, tarefa, "favoritos");
+              const confirmIcon = createConfirmIcon(pessoa, tarefa);
+              const taskText = document.createElement("div");
+              taskText.className = "task-text";
               taskText.textContent = tarefa;
-            }
+              
+              li.appendChild(taskDropIndicatorTop);
+              li.appendChild(dragHandle);
+              li.appendChild(star);
+              li.appendChild(trash);
+              li.appendChild(confirmIcon);
+              li.appendChild(taskText);
+              li.appendChild(taskDropIndicatorBottom);
+              
+              li.addEventListener('dragover', handleTaskDragOver);
+              ul.appendChild(li);
+            });
+            
+            content.appendChild(dropZone);
+            content.appendChild(ul);
+            
+            acc.appendChild(dropIndicatorTop);
+            acc.appendChild(header);
+            acc.appendChild(content);
+            acc.appendChild(dropIndicatorBottom);
+            
+            acc.addEventListener('dragover', handleAccordionDragOver);
+            acc.addEventListener('drop', handleAccordionDrop);
+            
+            container.appendChild(acc);
+          }
+        } else if (tarefasPorPessoa[accordionId]) {
+          const tarefasFiltradas = tarefasPorPessoa[accordionId].filter(
+            (t) => t.toLowerCase().includes(filtro)
+          );
+          if (tarefasFiltradas.length > 0 || accordionId.toLowerCase().includes(filtro)) {
+            const acc = document.createElement("div");
+            acc.className = "accordion";
+            acc.setAttribute('data-accordion-id', accordionId);
 
-            li.appendChild(star);
-            li.appendChild(trash);
-            li.appendChild(taskText);
-            ul.appendChild(li);
-          });
-          content.appendChild(ul);
+            // Indicadores de drop
+            const dropIndicatorTop = document.createElement("div");
+            dropIndicatorTop.className = "drop-indicator drop-indicator-top";
+            
+            const dropIndicatorBottom = document.createElement("div");
+            dropIndicatorBottom.className = "drop-indicator drop-indicator-bottom";
 
-          acc.appendChild(header);
-          acc.appendChild(content);
-          container.appendChild(acc);
+            const header = document.createElement("div");
+            header.className = "accordion-header";
+            
+            const headerContent = document.createElement("div");
+            headerContent.className = "accordion-header-content";
+            
+            const dragHandle = document.createElement("div");
+            dragHandle.className = "drag-handle";
+            dragHandle.innerHTML = "⋮⋮";
+            dragHandle.draggable = true;
+            dragHandle.addEventListener('dragstart', handleAccordionDragStart);
+            dragHandle.addEventListener('dragend', handleAccordionDragEnd);
+            
+            const title = document.createElement("div");
+            title.className = "accordion-title";
+            title.innerHTML = `
+              <span>${accordionId}</span>
+              <input type="text" value="${accordionId}" style="display: none;">
+            `;
+            
+            const editBtn = document.createElement("button");
+            editBtn.className = "edit-btn";
+            editBtn.innerHTML = "✎";
+            editBtn.onclick = (e) => {
+              e.stopPropagation();
+              editAccordionTitle(accordionId);
+            };
+            
+            // Event listeners para o input
+            const titleInput = title.querySelector('input');
+            titleInput.addEventListener('blur', () => {
+              saveAccordionTitle(accordionId, titleInput.value);
+            });
+            titleInput.addEventListener('keypress', (e) => {
+              if (e.key === 'Enter') {
+                titleInput.blur();
+              }
+            });
+            
+            headerContent.appendChild(dragHandle);
+            headerContent.appendChild(title);
+            header.appendChild(headerContent);
+            header.appendChild(editBtn);
+            
+            header.onclick = function (e) {
+              if (e.target.tagName !== "BUTTON" && e.target.tagName !== "INPUT" && !e.target.classList.contains('drag-handle')) {
+                this.nextElementSibling.style.display = this.nextElementSibling.style.display === "block" ? "none" : "block";
+              }
+            };
+
+            const content = document.createElement("div");
+            content.className = "accordion-content";
+            
+            const dropZone = document.createElement("div");
+            dropZone.className = "drop-zone";
+            dropZone.innerHTML = `Solte tarefas aqui para mover para ${accordionId}`;
+            dropZone.addEventListener('dragover', handleDropZoneDragOver);
+            dropZone.addEventListener('drop', (e) => handleTaskDrop(e, accordionId));
+            
+            const ul = document.createElement("ul");
+            tarefasFiltradas.forEach((tarefa) => {
+              const li = document.createElement("li");
+              li.setAttribute('data-task-id', tarefa);
+              li.setAttribute('data-source', accordionId);
+              
+              // Indicadores de drop para tarefa
+              const taskDropIndicatorTop = document.createElement("div");
+              taskDropIndicatorTop.className = "drop-indicator drop-indicator-top";
+              
+              const taskDropIndicatorBottom = document.createElement("div");
+              taskDropIndicatorBottom.className = "drop-indicator drop-indicator-bottom";
+
+              const dragHandle = document.createElement("div");
+              dragHandle.className = "task-drag-handle";
+              dragHandle.innerHTML = "⋮⋮";
+              dragHandle.draggable = true;
+              dragHandle.addEventListener('dragstart', handleTaskDragStart);
+              dragHandle.addEventListener('dragend', handleTaskDragEnd);
+              
+              const star = createStar(accordionId, tarefa);
+              const trash = createTrashIcon(accordionId, tarefa, "tarefasPorPessoa");
+              const taskText = document.createElement("div");
+              taskText.className = "task-text";
+
+              if (filtro) {
+                const regex = new RegExp(filtro, "gi");
+                const textoDestacado = tarefa.replace(
+                  regex,
+                  (match) => 
+                    `<span class="highlight">${match}</span>`
+                );
+                taskText.innerHTML = textoDestacado;
+              } else {
+                taskText.textContent = tarefa;
+              }
+
+              li.appendChild(taskDropIndicatorTop);
+              li.appendChild(dragHandle);
+              li.appendChild(star);
+              li.appendChild(trash);
+              li.appendChild(taskText);
+              li.appendChild(taskDropIndicatorBottom);
+              
+              li.addEventListener('dragover', handleTaskDragOver);
+              ul.appendChild(li);
+            });
+            
+            content.appendChild(dropZone);
+            content.appendChild(ul);
+
+            acc.appendChild(dropIndicatorTop);
+            acc.appendChild(header);
+            acc.appendChild(content);
+            acc.appendChild(dropIndicatorBottom);
+            
+            acc.addEventListener('dragover', handleAccordionDragOver);
+            acc.addEventListener('drop', handleAccordionDrop);
+            
+            container.appendChild(acc);
+          }
+        }
+      });
+
+      // Adicionar acordeões que não estão na ordem salva
+      for (let pessoa in tarefasPorPessoa) {
+        if (!accordionOrder.includes(pessoa)) {
+          accordionOrder.push(pessoa);
+          saveAccordionOrder();
         }
       }
     }
@@ -910,34 +1613,50 @@
     }
 
     function exportFavoritosJSON() {
-      const blob = new Blob([JSON.stringify(favoritos, null, 2)], {
+      const exportData = {
+        favoritos: favoritos,
+        minhasTarefas: minhasTarefas,
+        timestamp: new Date().toISOString()
+      };
+      
+      const blob = new Blob([JSON.stringify(exportData, null, 2)], {
         type: "application/json",
       });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "favoritos.json";
+      a.download = "favoritos_e_minhas_tarefas.json";
       a.click();
       URL.revokeObjectURL(url);
+      showStatus('Favoritos e Minhas Tarefas exportados!');
     }
 
     function exportFavoritosCSV() {
-      let csv = "Responsável,Tarefa\n";
+      // Usar BOM UTF-8 para garantir acentuação correta
+      let csv = "\uFEFF";
+      csv += "Responsável,Tarefa\n";
       favoritos.forEach(({ pessoa, tarefa }) => {
-        csv += `"${pessoa}","${tarefa.replace(/"/g, "\"\"")}"\n`;
+        // Escapar aspas duplas e envolver em aspas
+        const pessoaEscapada = `"${pessoa.replace(/"/g, '""')}"`;
+        const tarefaEscapada = `"${tarefa.replace(/"/g, '""')}"`;
+        csv += `${pessoaEscapada},${tarefaEscapada}\n`;
       });
-      const blob = new Blob([csv], { type: "text/csv" });
+      
+      const blob = new Blob([csv], { 
+        type: "text/csv;charset=utf-8;" 
+      });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
       a.download = "favoritos.csv";
       a.click();
       URL.revokeObjectURL(url);
+      showStatus('Favoritos exportados em CSV!');
     }
 
     function exportDatabase() {
-      // Salvar tarefasPorPessoa antes do backup
       saveTarefasPorPessoa();
+      saveAccordionOrder();
       
       if (db && sqliteReady) {
         try {
@@ -961,6 +1680,7 @@
           minhasTarefas: minhasTarefas,
           favoritos: favoritos,
           tarefasPorPessoa: tarefasPorPessoa,
+          accordionOrder: accordionOrder,
           timestamp: new Date().toISOString()
         };
         const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
@@ -984,7 +1704,6 @@
           reader.onload = async function(e) {
             try {
               if (file.name.endsWith('.sqlite')) {
-                // Garantir que SQLite está carregado
                 if (!sqliteReady) {
                   showStatus('Inicializando SQLite...', false);
                   await initSQLite();
@@ -998,6 +1717,7 @@
                     minhasTarefas = data.minhasTarefas;
                     favoritos = data.favoritos;
                     tarefasPorPessoa = data.tarefasPorPessoa;
+                    accordionOrder = data.accordionOrder;
                     renderAccordion();
                     showStatus('Banco SQLite restaurado com sucesso!');
                   } catch (sqlError) {
@@ -1013,9 +1733,11 @@
                   minhasTarefas = backup.minhasTarefas || [];
                   favoritos = backup.favoritos || [];
                   tarefasPorPessoa = backup.tarefasPorPessoa || {};
+                  accordionOrder = backup.accordionOrder || ['minhas-tarefas', 'lista-favoritos'];
                   saveMinhasTarefas();
                   saveFavoritos();
                   saveTarefasPorPessoa();
+                  saveAccordionOrder();
                   renderAccordion();
                   showStatus('Backup JSON restaurado com sucesso!');
                 } catch (jsonError) {
@@ -1039,6 +1761,25 @@
       input.click();
     }
 
+    function clearWordData() {
+      if (confirm("Tem certeza que deseja limpar todos os dados carregados do Word? Esta ação não pode ser desfeita.\n\nOs dados de 'Minhas Tarefas' e 'Lista de Favoritos' serão preservados.")) {
+        // Limpar dados do Word
+        tarefasPorPessoa = {};
+        
+        // Resetar ordem dos acordeões para apenas os fixos
+        accordionOrder = ['minhas-tarefas', 'lista-favoritos'];
+        
+        // Salvar alterações
+        saveTarefasPorPessoa();
+        saveAccordionOrder();
+        
+        // Renderizar novamente
+        renderAccordion();
+        
+        showStatus('Dados do Word limpos com sucesso!');
+      }
+    }
+
     document.getElementById("search").addEventListener("input", function () {
       renderAccordion(this.value.toLowerCase());
     });
@@ -1056,20 +1797,26 @@
             lines.forEach((line) => {
               line = line.trim();
               if (line.length === 0) return;
-              if (
-                /^[A-ZÁÉÍÓÚÃÕÇ][a-záéíóúãõç]+(\s+[A-ZÁÉÍÓÚÃÕÇa-záéíóúãõç]+)*$/.test(
-                  line
-                ) && !line.includes(":")
-              ) {
+              
+              // Detectar títulos: uma palavra, primeira letra maiúscula
+              if (/^[A-ZÁÉÍÓÚÃÕÇ][a-záéíóúãõç]*$/.test(line)) {
                 current = line;
                 tarefasPorPessoa[current] = [];
-              } else if (current) {
-                tarefasPorPessoa[current].push(line);
+                // Adicionar à ordem se não existir
+                if (!accordionOrder.includes(current)) {
+                  accordionOrder.push(current);
+                }
+              } else if (current && line.length > 0) {
+                // Limpar marcadores de lista e adicionar tarefa
+                const cleanLine = line.replace(/^[•\-\*]\s*/, '').trim();
+                if (cleanLine.length > 0) {
+                  tarefasPorPessoa[current].push(cleanLine);
+                }
               }
             });
             
-            // Salvar no SQLite após o upload
             saveTarefasPorPessoa();
+            saveAccordionOrder();
             renderAccordion();
             showStatus('Documento carregado com sucesso!');
           }).catch(error => {
@@ -1106,12 +1853,11 @@
       e.preventDefault();
       deferredPrompt = e;
       
-      // Mostrar botão de instalação personalizado
       const installBtn = document.createElement('button');
       installBtn.textContent = 'Instalar App';
       installBtn.className = 'btn btn-success';
       installBtn.style.position = 'fixed';
-      installBtn.style.bottom = '20px';
+      installBtn.style.bottom = '70px';
       installBtn.style.right = '20px';
       installBtn.style.zIndex = '1000';
       
@@ -1140,12 +1886,13 @@
         minhasTarefas = data.minhasTarefas;
         favoritos = data.favoritos;
         tarefasPorPessoa = data.tarefasPorPessoa;
+        accordionOrder = data.accordionOrder;
         showStatus('SQLite carregado com sucesso!');
       } else {
-        // Carregar do localStorage como fallback
         minhasTarefas = JSON.parse(localStorage.getItem("minhasTarefas") || "[]");
         favoritos = JSON.parse(localStorage.getItem("favoritos") || "[]");
         tarefasPorPessoa = JSON.parse(localStorage.getItem("tarefasPorPessoa") || "{}");
+        accordionOrder = JSON.parse(localStorage.getItem("accordionOrder") || '["minhas-tarefas", "lista-favoritos"]');
         showStatus('Usando localStorage como backup', true);
       }
       

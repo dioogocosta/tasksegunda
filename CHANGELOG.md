@@ -1,109 +1,111 @@
 # Changelog - Tarefas Segunda PWA
 
-## Versão 2.0 - Melhorias de Backup e Interface Mobile
+## Versão 4.0 - Restauração Completa, Renomeação, Exportação e Drag & Drop
 
-### 🔧 **Correções Implementadas**
+### 🔧 **Correções e Novas Funcionalidades**
 
-#### ✅ **Backup SQLite Completo**
-- **Problema**: Backup SQLite não incluía dados do upload de documentos Word
-- **Solução**: Adicionada tabela `tarefas_por_pessoa` no SQLite
-- **Funcionalidade**: Agora o backup inclui:
-  - Minhas Tarefas
-  - Lista de Favoritos  
-  - **Dados do Word (tarefasPorPessoa)** ← NOVO
-- **Função**: `saveTarefasPorPessoa()` salva automaticamente após upload
+#### ✅ **Restauração Completa do SQLite**
+- **Problema**: Restauração anterior não trazia todas as informações (Minhas Tarefas, Lista de Favoritos, Tarefas Organizadas por Pessoa).
+- **Solução**: A lógica de `loadFromSQLite()` e `importDatabase()` foi aprimorada para carregar e restaurar corretamente todas as tabelas do banco de dados (minhas_tarefas, favoritos, tarefas_por_pessoa e accordion_order).
+- **Funcionalidade**: Agora, ao restaurar um backup SQLite, todos os dados e a ordem dos colapses são recuperados integralmente.
 
-#### ✅ **Botões Mobile Otimizados**
-- **Problema**: Botões grandes comprimiam texto em dispositivos móveis
-- **Solução**: Sistema responsivo com ícones compactos
-- **Desktop**: Botões com texto completo
-- **Mobile**: Ícones coloridos 32x32px:
-  - **Verde (✓)**: Concluir tarefa
-  - **Azul (✎)**: Editar tarefa  
-  - **Vermelho (✕)**: Excluir tarefa
-  - **Amarelo (↩)**: Reabrir tarefa
+#### ✅ **Renomeação de Colapses**
+- **Funcionalidade**: Possibilidade de renomear os títulos dos colapses gerados a partir do upload do Word (tarefasPorPessoa).
+- **Exceções**: Os colapses "Minhas Tarefas" e "Lista de Favoritos" permanecem fixos e não podem ser renomeados.
+- **Interface**: Ao clicar no título de um colapse renomeável, ele se torna um campo de texto editável. A alteração é salva automaticamente ao perder o foco ou pressionar Enter.
+
+#### ✅ **Exportação JSON Aprimorada**
+- **Funcionalidade**: O botão "Exportar Favoritos (JSON)" foi renomeado para "Exportar Favoritos + Minhas Tarefas (JSON)".
+- **Conteúdo**: Agora, o arquivo JSON exportado inclui tanto a `Lista de Favoritos` quanto as `Minhas Tarefas`, facilitando o backup e a portabilidade de dados.
+
+#### ✅ **Drag and Drop para Colapses**
+- **Funcionalidade**: Permite reordenar os colapses na interface usando arrastar e soltar.
+- **Restrições**: "Minhas Tarefas" e "Lista de Favoritos" são fixos e não podem ser movidos, permanecendo sempre no topo em suas posições originais.
+- **Persistência**: A nova ordem dos colapses é salva no SQLite e persistida entre as sessões.
+
+#### ✅ **Drag and Drop para Tarefas**
+- **Funcionalidade**: Permite mover tarefas individuais entre diferentes colapses usando arrastar e soltar.
+- **Zonas de Drop**: Cada colapse (incluindo "Minhas Tarefas" e "Lista de Favoritos") possui uma "zona de drop" visível durante o arrasto, indicando onde a tarefa pode ser solta.
+- **Lógica de Movimentação**: A tarefa é removida do colapse de origem e adicionada ao colapse de destino, com a persistência dos dados atualizada no SQLite.
 
 ### 🎨 **Melhorias de Interface**
 
-#### **Layout Responsivo**
+#### **Estilos para Drag and Drop**
 ```css
-/* Desktop - botões com texto */
-@media (min-width: 768px) {
-  .action-btn { padding: 5px 10px; }
-  .action-btn::before { content: attr(data-text); }
+.accordion.dragging, .accordion-content li.dragging {
+  opacity: 0.5;
 }
-
-/* Mobile - apenas ícones */
-@media (max-width: 767px) {
-  .action-btn { width: 32px; height: 32px; }
-  .action-btn::before { content: attr(data-icon); }
+.drop-zone {
+  min-height: 50px;
+  border: 2px dashed #ccc;
+  border-radius: 5px;
+  margin: 10px 0;
+  padding: 10px;
+  text-align: center;
+  color: #666;
+  display: none;
+}
+.drop-zone.active {
+  display: block;
+  border-color: #007BFF;
+  background-color: #f0f8ff;
+}
+.drop-zone.hover {
+  border-color: #28a745;
+  background-color: #f0fff0;
 }
 ```
 
-#### **Cores dos Botões**
-- **Concluir**: `#28a745` (Verde)
-- **Editar**: `#007BFF` (Azul)
-- **Excluir**: `#dc3545` (Vermelho)
-- **Reabrir**: `#ffc107` (Amarelo)
+#### **Estilos para Renomeação de Colapses**
+```css
+.accordion-header.editable {
+  cursor: text;
+}
+.accordion-header input {
+  background: transparent;
+  border: none;
+  color: white;
+  font-weight: bold;
+  font-size: inherit;
+  width: 100%;
+  outline: none;
+}
+.rename-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 12px;
+}
+```
 
 ### 💾 **Persistência Melhorada**
 
 #### **Estrutura SQLite Atualizada**
 ```sql
--- Nova tabela para dados do Word
-CREATE TABLE tarefas_por_pessoa (
+-- Tabela para a ordem dos acordeões
+CREATE TABLE IF NOT EXISTS accordion_order (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  pessoa TEXT NOT NULL,
-  tarefa TEXT NOT NULL
+  accordion_id TEXT NOT NULL,
+  position INTEGER NOT NULL
 );
 ```
 
-#### **Fluxo de Backup**
-1. Upload de documento Word
-2. Parsing automático das tarefas por pessoa
-3. Salvamento em `tarefasPorPessoa` (memória)
-4. Sincronização com SQLite via `saveTarefasPorPessoa()`
-5. Backup inclui todos os dados
+#### **Fluxo de Backup/Restauração**
+- O backup agora inclui a ordem dos colapses (`accordion_order`).
+- A restauração carrega todas as tabelas e a ordem, garantindo a integridade completa dos dados.
 
 ### 🧪 **Testes Realizados**
 
 #### **Funcionalidades Testadas**
-- ✅ Upload de documento Word
-- ✅ Backup SQLite com dados completos
-- ✅ Botões responsivos (desktop/mobile)
-- ✅ Persistência entre sessões
-- ✅ Fallback para localStorage
-
-#### **Compatibilidade**
-- ✅ Chrome 57+
-- ✅ Firefox 52+
-- ✅ Safari 11+
-- ✅ Edge 79+
-
-### 📱 **Experiência Mobile**
-
-#### **Antes**
-- Botões grandes ocupavam muito espaço
-- Texto das tarefas comprimido
-- Interface pouco amigável ao toque
-
-#### **Depois**
-- Ícones compactos 32x32px
-- Mais espaço para texto das tarefas
-- Interface otimizada para toque
-- Cores intuitivas para ações
-
-### 🔄 **Migração Automática**
-
-#### **Dados Existentes**
-- Aplicação detecta dados antigos automaticamente
-- Migração transparente para nova estrutura
-- Sem perda de dados durante atualização
-
-#### **Compatibilidade Reversa**
-- Funciona com backups antigos
-- Suporte a localStorage como fallback
-- Graceful degradation se SQLite falhar
+- ✅ Restauração completa do SQLite (Minhas Tarefas, Favoritos, Tarefas por Pessoa, Ordem dos Colapses).
+- ✅ Renomeação de colapses (exceto fixos).
+- ✅ Exportação JSON com Minhas Tarefas.
+- ✅ Drag and Drop para ordenar colapses.
+- ✅ Drag and Drop para mover tarefas entre colapses.
+- ✅ Persistência de todas as alterações.
 
 ### 📋 **Próximas Melhorias Sugeridas**
 
@@ -114,16 +116,10 @@ CREATE TABLE tarefas_por_pessoa (
 - [ ] Categorias de tarefas
 - [ ] Relatórios de produtividade
 
-#### **Otimizações Técnicas**
-- [ ] Service Worker mais robusto
-- [ ] Cache inteligente
-- [ ] Compressão de dados
-- [ ] Indexação full-text
-
 ---
 
 **Data**: 08/07/2025  
-**Versão**: 2.0  
+**Versão**: 4.0  
 **Compatibilidade**: PWA Moderna com SQLite  
 **Status**: ✅ Produção
 
