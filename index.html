@@ -14,13 +14,13 @@
             box-sizing: border-box;
         }
 		
-		        /* Remover marcadores de lista */
+        /* Remover marcadores de lista */
         .accordion-content ul {
             list-style: none;
             padding-left: 0;
         }
 		
-		        /* Melhorar botão de edição */
+        /* Melhorar botão de edição */
         .edit-btn {
             background: none;
             border: none;
@@ -43,39 +43,30 @@
             color: #333;
         }
 
-/* INÍCIO - NOVOS ESTILOS PARA TAREFAS IMPORTADAS */
-/* Estilo para tarefas importadas */
+        /* INÍCIO - NOVOS ESTILOS PARA TAREFAS IMPORTADAS */
+        /* Estilo para tarefas importadas */
         .imported-task {
             background: #f8f9fa;
             border-radius: 8px;
-            padding: 12px;
+            padding: 12px 16px;
             margin-bottom: 8px;
             border-left: 4px solid #6c757d;
+            display: flex;
+            align-items: center;
+            transition: all 0.2s ease;
         }
 
-.imported-task {
-    background: #f8f9fa;
-    border-radius: 8px;
-    padding: 12px 16px;
-    margin-bottom: 8px;
-    border-left: 4px solid #6c757d;
-    display: flex;
-    align-items: center;
-    transition: all 0.2s ease;
-}
+        .imported-task:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
 
-.imported-task:hover {
-    transform: translateX(5px);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-.task-source {
-    font-size: 12px;
-    color: #666;
-    margin-top: 4px;
-}
-/* FIM - NOVOS ESTILOS */
-
+        .task-source {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+        /* FIM - NOVOS ESTILOS */
 
         /* Header */
         .header {
@@ -95,37 +86,37 @@
             justify-content: space-between;
         }
 		
-		.accordion-header-content {
-			display: flex;
-			align-items: center;
-			flex: 1;
-		}
+        .accordion-header-content {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
 		
-				.menu-icon {
-			display: inline-block;
-		}
+        .menu-icon {
+            display: inline-block;
+        }
 
-		.menu-text {
-			display: inline-block;
-		}
+        .menu-text {
+            display: inline-block;
+        }
 
-		@media (max-width: 768px) {
-			.menu-text {
-				display: none;
-			}
-		}
+        @media (max-width: 768px) {
+            .menu-text {
+                display: none;
+            }
+        }
 		
-		.dragging {
-			opacity: 0.5;
-			background: #e9ecef;
-			border: 2px dashed #4285F4;
-		}
+        .dragging {
+            opacity: 0.5;
+            background: #e9ecef;
+            border: 2px dashed #4285F4;
+        }
 
-		//.task-item {
-		//	transition: transform 0.2s ease, opacity 0.2s ease;
-		//}
+        .task-item {
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
 
-		.task-actions {
+        .task-actions {
             background: none;
             border: none;
             cursor: pointer;
@@ -133,14 +124,17 @@
             border-radius: 4px;
             color: #666;
             transition: all 0.3s ease;
-		}
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
 
-		.drag-handle {
-			margin-right: 10px;
-			cursor: move;
-			color: #666;
-			user-select: none;
-		}
+        .drag-handle {
+            margin-right: 10px;
+            cursor: move;
+            color: #666;
+            user-select: none;
+        }
 
         .logo-section {
             display: flex;
@@ -393,163 +387,86 @@
             display: block;
         }
 
-/* ESTILOS GERAIS DAS TAREFAS */
-/* ESTILOS GERAIS DAS TAREFAS */
-.task-item {
-    background: #f8f9fa;
-    border-radius: 8px;
-    padding: 16px;
-    margin-bottom: 12px;
-    border-left: 4px solid #4285F4;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
+        /* Tarefas */
+        .task-item {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-left: 4px solid #4285F4;
+            transition: all 0.3s ease;
+            position: relative;
+        }
 
-.task-item:hover {
-    transform: translateX(5px);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
+        .task-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
 
-.task-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    position: relative;
-    gap: 12px;
-}
+        .task-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
 
-.task-info {
-    flex: 1;
-    min-width: 0;
-    overflow: hidden;
-}
+        .task-info {
+            flex: 1;
+            min-width: 0;
+        }
 
-.task-title {
-    font-weight: 600;
-    margin-bottom: 4px;
-    color: #333;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+        .task-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #333;
+        }
 
-.task-description {
-    color: #666;
-    font-size: 14px;
-    margin-bottom: 8px;
-    white-space: pre-wrap;
-}
+        .task-description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
 
-.task-date, .task-source {
-    color: #999;
-    font-size: 12px;
-}
+        .task-date {
+            color: #999;
+            font-size: 12px;
+        }
 
-/* ÁREA DE AÇÕES */
-.task-actions {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
+        /* Ajustes para tarefas importadas - Responsivo */
+        .imported-task .task-content {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            width: 100%;
+        }
 
-.task-menu-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 8px;
-    color: #666;
-    font-size: 18px;
-    transition: all 0.3s ease;
-    flex-shrink: 0;
-}
+        .imported-task .task-info {
+            flex: 1;
+            min-width: 0;
+        }
 
-.task-menu-button:hover {
-    color: #333;
-}
-
-.task-action-buttons {
-    display: none;
-    position: relative;
-    background: white;
-    border-radius: 4px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-    z-index: 10;
-    gap: 4px;
-    padding: 4px;
-    align-items: center;
-}
-
-.task-action-buttons.show {
-    display: flex;
-    animation: fadeIn 0.2s ease;
-}
-
-.task-action-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 6px;
-    font-size: 16px;
-    transition: all 0.2s ease;
-    border-radius: 4px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.task-action-btn:hover {
-    transform: scale(1.1);
-    background: rgba(0,0,0,0.05);
-}
-.btn-complete { color: #28a745; }
-.btn-edit { color: #007bff; }
-.btn-delete { color: #dc3545; }
-.btn-favorite { color: #ffc107; }
-
-/* Ajustes para tarefas importadas - Responsivo */
-.imported-task .task-content {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.imported-task .task-actions {
-    margin-left: auto;
-}
-
-.imported-task .task-info {
-    flex: 1;
-    min-width: 0; /* Permite que o texto quebre */
-}
-
-.imported-task .task-actions {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-/* Ajustes para mobile */
-@media (max-width: 767px) {
-    .imported-task .task-content {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .imported-task .task-actions {
-        align-self: flex-end;
-        margin-top: 8px;
-    }
-    
-    .imported-task .task-action-buttons {
-        position: absolute;
-        right: 0;
-        top: 100%;
-        flex-direction: row;
-    }
-}       
+        /* Ajustes para mobile */
+        @media (max-width: 767px) {
+            .task-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .task-content {
+                flex-direction: row;
+                align-items: center;
+            }
+            
+            .task-drag-handle {
+                margin-bottom: 0;
+                margin-right: 8px;
+            }
+            
+            .task-actions {
+                margin-top: 8px;
+                align-self: flex-end;
+            }
+        }       
 
         .task-menu-button {
             background: none;
@@ -567,23 +484,28 @@
         }
 
         .task-action-buttons {
-			position: absolute;
-			right: 0;
-			top: 100%;
-			background: white;
-			border-radius: 4px;
-			box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-			z-index: 10;
-			display: none;
-			flex-direction: row;
-		}
+            position: absolute;
+            right: 0;
+            top: 0;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 10;
+            display: none;
+            flex-direction: row;
+        }
 
         .task-action-buttons.show {
             display: flex;
         }
 
         .task-action-btn {
-			margin: 0 3px;
+            margin: 0 3px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            font-size: 16px;
         }
 
         .task-action-btn:hover {
@@ -617,51 +539,50 @@
         }
 
         /* Responsivo */
-@media (max-width: 768px) {
-    .header-content {
-        flex-direction: row; /* Mantém em linha mesmo em mobile */
-        flex-wrap: wrap; /* Permite quebra de linha se necessário */
-        gap: 10px;
-        padding: 10px 15px;
-    }
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 10px;
+                padding: 10px 15px;
+            }
 
-    .logo-section {
-        order: 1;
-        flex: 1;
-    }
+            .logo-section {
+                order: 1;
+                flex: 1;
+            }
 
-    .search-container {
-        order: 3;
-        width: 100%;
-        margin: 0;
-        min-width: 0; /* Permite que o search diminua */
-    }
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin: 0;
+                min-width: 0;
+            }
 
-    .menu-button {
-        order: 2;
-        padding: 10px; /* Torna o botão mais compacto */
-        font-size: 16px;
-    }
+            .menu-button {
+                order: 2;
+                padding: 10px;
+                font-size: 16px;
+            }
 
-    .menu-button::before {
-        content: "☰"; /* Mostra apenas o ícone */
-    }
+            .menu-button::before {
+                content: "☰";
+            }
 
-    .menu-button span {
-        display: none; /* Esconde o texto "Menu" */
-    }
+            .menu-button span {
+                display: none;
+            }
 
-    /* Ajuste para quando a tela for muito pequena */
-    @media (max-width: 400px) {
-        .logo-section {
-            flex: 100%;
+            @media (max-width: 400px) {
+                .logo-section {
+                    flex: 100%;
+                }
+                
+                .menu-button {
+                    order: 1;
+                }
+            }
         }
-        
-        .menu-button {
-            order: 1;
-        }
-    }
-}
 
         /* Animações */
         @keyframes slideIn {
@@ -875,152 +796,160 @@
             display: block;
         }
 
-/* Adicionar ao CSS existente */
-.task-drop-indicator {
-    height: 2px;
-    background-color: transparent;
-    margin: 2px 0;
-    transition: all 0.2s ease;
-}
+        /* Task drop indicators */
+        .task-drop-indicator {
+            height: 3px;
+            background-color: #4285F4;
+            margin: 2px 0;
+            border-radius: 2px;
+            display: none;
+            opacity: 0.8;
+        }
 
-.task-drop-indicator.active {
-    background-color: #4285F4;
-    height: 4px;
-    margin: 4px 0;
-}
+        .task-drop-indicator.active {
+            display: block;
+        }
 
-.task-drop-indicator-top {
-    margin-top: 0;
-}
+        .task-drop-indicator-top {
+            margin-bottom: 2px;
+        }
 
-.task-drop-indicator-bottom {
-    margin-bottom: 0;
-}
+        .task-drop-indicator-bottom {
+            margin-top: 2px;
+        }
 
-.drag-handle {
-    cursor: move;
-    padding: 8px;
-    margin-right: 8px;
-    color: #666;
-    user-select: none;
-}
+        /* Ajustar drag handle */
+        .task-drag-handle {
+            cursor: move;
+            margin-right: 8px;
+            color: #666;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            padding: 2px 5px;
+            border-radius: 4px;
+            background: #e9ecef;
+            font-size: 12px;
+        }
 
-.drag-handle:hover {
-    background: rgba(0,0,0,0.05);
-    border-radius: 4px;
-}
+        .task-drag-handle:hover {
+            background: #dee2e6;
+        }
 
-  /* Ajustar drag handle */
-/* DRAG HANDLE */
-/* DRAG HANDLE */
-.task-drag-handle {
-    cursor: move;
-    color: #666;
-    user-select: none;
-    padding: 4px;
-    border-radius: 4px;
-    background: rgba(0,0,0,0.05);
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-}
+        /* Highlight for search */
+        .highlight {
+            background-color: yellow;
+            padding: 2px 0;
+        }
 
-.task-drag-handle:hover {
-    background: rgba(0,0,0,0.1);
-}
+        /* Star for favorites */
+        .star {
+            cursor: pointer;
+            margin-right: 8px;
+            color: gray;
+            font-size: 16px;
+        }
 
-/* RESPONSIVO - DESKTOP */
-@media (min-width: 1024px) {
-    /* Minhas Tarefas - Desktop */
-    #minhas-tarefas .task-action-buttons {
-        position: absolute;
-        right: 0;
-        top: 100%;
-        background: white;
-        border-radius: 4px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-        margin-top: 5px;
-    }
-	    /* Lista de Favoritos e Importados - Desktop */
-    #lista-favoritos .task-action-buttons,
-    .accordion:not(#minhas-tarefas):not(#lista-favoritos) .task-action-buttons {
-        position: static;
-        background: transparent;
-        box-shadow: none;
-        margin-left: 8px;
-    }
-}
-    
-    .imported-task .task-action-buttons {
-        right: 40px;
-        top: 50%;
-        transform: translateY(-50%);
-        margin-top: 0;
-    }
-}
+        .star.favorited {
+            color: gold;
+        }
 
+        /* Confirm icon */
+        .confirm-icon {
+            cursor: pointer;
+            margin-right: 8px;
+            color: #28a745;
+            font-size: 16px;
+        }
 
-/* RESPONSIVO - TABLET */
-@media (max-width: 1023px) and (min-width: 768px) {
-    .task-action-buttons {
-        position: static;
-        background: transparent;
-        box-shadow: none;
-        margin-left: 8px;
-    }
-    
-    .task-info {
-        flex: 1;
-        min-width: 0;
-    }
-}
+        /* Trash icon */
+        .trash-icon {
+            cursor: pointer;
+            margin-right: 8px;
+            color: #dc3545;
+            font-size: 16px;
+        }
 
-/* RESPONSIVO - MOBILE */
-@media (max-width: 767px) {
-    .task-item {
-        padding: 12px;
-        margin-bottom: 16px;
-    }
-    
-    .task-content {
-        flex-wrap: wrap;
-    }
-    
-    .task-info {
-        width: 100%;
-        margin-bottom: 8px;
-    }
-    
-    .task-actions {
-        width: 100%;
-        justify-content: flex-end;
-    }
-    
-    .task-action-buttons {
-        position: static;
-        box-shadow: none;
-        background: transparent;
-        margin-left: 8px;
-    }
-}
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-5px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+        /* Edit form */
+        .edit-form {
+            background: #fff3cd;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 8px;
+            display: none;
+        }
 
-/* ESTADO DE TAREFA CONCLUÍDA */
-.task-completed {
-    opacity: 0.7;
-}
+        .edit-form input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
 
-.task-completed .task-title {
-    text-decoration: line-through;
-    color: #28a745;
-
-}    </style>
+        /* Mobile optimized buttons */
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            padding: 0;
+            margin: 2px;
+        }
+        
+        .action-btn-success {
+            background-color: #28a745;
+        }
+        
+        .action-btn-primary {
+            background-color: #007bff;
+        }
+        
+        .action-btn-danger {
+            background-color: #dc3545;
+        }
+        
+        .action-btn-warning {
+            background-color: #ffc107;
+            color: black;
+        }
+        
+        /* Desktop buttons */
+        @media (min-width: 768px) {
+            .action-btn {
+                width: auto;
+                height: auto;
+                padding: 5px 10px;
+                font-size: 12px;
+                border-radius: 4px;
+            }
+            
+            .action-btn::before {
+                content: attr(data-text);
+            }
+        }
+        
+        /* Mobile - icons only */
+        @media (max-width: 767px) {
+            .task-actions {
+                gap: 2px;
+            }
+            
+            .action-btn::before {
+                content: attr(data-icon);
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Status message -->
@@ -1038,10 +967,10 @@
                 <input type="text" class="search-input" placeholder="Buscar tarefas..." id="search">
             </div>
             
-			<button class="menu-button" onclick="toggleSidebar()">
-				<span class="menu-icon">☰</span>
-				<span class="menu-text">Menu</span>
-			</button>
+            <button class="menu-button" onclick="toggleSidebar()">
+                <span class="menu-icon">☰</span>
+                <span class="menu-text">Menu</span>
+            </button>
         </div>
     </header>
 
@@ -1113,7 +1042,7 @@
 
     <!-- Rodapé -->
     <footer class="footer">
-        Tarefas Segunda v1.0.5 - 09/07/2025
+        Tarefas Segunda v1.0.6 - 16/07/2025
     </footer>
 
     <script>
@@ -1123,13 +1052,11 @@
         let SQL = null;
         let sqliteReady = false;
         let accordionOrder = ['minhas-tarefas', 'lista-favoritos'];
-        
-		let draggedElement = null;
-		let draggedType = null;
-		let draggedSource = null;
-		let draggedTaskId = null;
-		
+        let accordionStates = {};
+        let draggedElement = null;
+        let draggedType = null;
         let draggedIndex = -1;
+        let draggedSource = null;
         let minhasTarefas = [];
         let favoritos = [];
         let editandoTarefa = null;
@@ -1143,6 +1070,23 @@
             setTimeout(() => {
                 status.style.display = 'none';
             }, 3000);
+        }
+
+        // Funções para gerenciar estado dos acordeões
+        function saveAccordionState(accordionId, isOpen) {
+            accordionStates[accordionId] = isOpen;
+            localStorage.setItem('accordionStates', JSON.stringify(accordionStates));
+        }
+
+        function getAccordionState(accordionId) {
+            return accordionStates[accordionId] !== undefined ? accordionStates[accordionId] : accordionId === 'minhas-tarefas'; // Padrão: minhas-tarefas aberto, outros fechados
+        }
+
+        function loadAccordionStates() {
+            const saved = localStorage.getItem('accordionStates');
+            if (saved) {
+                accordionStates = JSON.parse(saved);
+            }
         }
 
         // Funções do modal lateral
@@ -1489,26 +1433,27 @@
                 renderAccordion(document.getElementById("search").value.toLowerCase());
             }
         }
-function excluirTarefa(id) {
-    if (confirm("Tem certeza que deseja excluir esta tarefa?")) {
-        minhasTarefas = minhasTarefas.filter(t => t.id !== id);
-        // Reordenar
-        minhasTarefas.forEach((tarefa, index) => {
-            tarefa.ordem = index;
-        });
-        saveMinhasTarefas();
-        renderAccordion(document.getElementById("search").value.toLowerCase());
-    }
-}
 
-function toggleConcluida(id) {
-    const tarefa = minhasTarefas.find(t => t.id === id);
-    if (tarefa) {
-        tarefa.concluida = !tarefa.concluida;
-        saveMinhasTarefas();
-        renderAccordion(document.getElementById("search").value.toLowerCase());
-    }
-}
+        function excluirTarefa(id) {
+            if (confirm("Tem certeza que deseja excluir esta tarefa?")) {
+                minhasTarefas = minhasTarefas.filter((t) => t.id !== id);
+                // Reordenar
+                minhasTarefas.forEach((tarefa, index) => {
+                    tarefa.ordem = index;
+                });
+                saveMinhasTarefas();
+                renderAccordion(document.getElementById("search").value.toLowerCase());
+            }
+        }
+
+        function toggleConcluida(id) {
+            const tarefa = minhasTarefas.find((t) => t.id === id);
+            if (tarefa) {
+                tarefa.concluida = !tarefa.concluida;
+                saveMinhasTarefas();
+                renderAccordion(document.getElementById("search").value.toLowerCase());
+            }
+        }
 
         function editAccordionTitle(accordionId) {
             const titleSpan = document.querySelector(`[data-accordion-id="${accordionId}"] .accordion-title span`);
@@ -1638,443 +1583,187 @@ function toggleConcluida(id) {
             }
         }
 
-        // Drag and Drop para tarefas
-        /* INÍCIO - FUNÇÕES DRAG AND DROP PARA TAREFAS */
-function handleTaskDragStart(e) {
-    draggedElement = this.closest('.task-item');
-    draggedType = 'task';
-    draggedSource = this.closest('.accordion').getAttribute('data-accordion-id');
-    draggedTaskId = this.closest('.task-item').getAttribute('data-task-id');
-    
-    // Para evitar problemas com Firefox
-    e.dataTransfer.setData('text/plain', draggedTaskId);
-    
-    draggedElement.classList.add('dragging');
-    e.dataTransfer.effectAllowed = 'move';
-    
-    // Mostrar todas as zonas de drop
-    document.querySelectorAll('.drop-zone').forEach(zone => {
-        zone.classList.add('active');
-    });
-}
-
-function handleTaskDragOver(e) {
-    e.preventDefault();
-    if (draggedType !== 'task') return;
-    
-    const targetTask = e.target.closest('.task-item');
-    const targetAccordion = e.target.closest('.accordion');
-    
-    // Se estiver sobre uma tarefa
-    if (targetTask && targetTask !== draggedElement) {
-        // Remover indicadores anteriores
-        document.querySelectorAll('.task-drop-indicator').forEach(ind => {
-            ind.classList.remove('active');
-        });
-        
-        // Calcular posição
-        const rect = targetTask.getBoundingClientRect();
-        const midY = rect.top + rect.height / 2;
-        const isBefore = e.clientY < midY;
-        
-        // Mostrar indicador apropriado
-        const indicator = isBefore 
-            ? targetTask.querySelector('.task-drop-indicator-top')
-            : targetTask.querySelector('.task-drop-indicator-bottom');
-        
-        if (indicator) {
-            indicator.classList.add('active');
-        }
-    }
-    // Se estiver sobre uma zona de drop
-    else if (targetAccordion) {
-        const dropZone = targetAccordion.querySelector('.drop-zone');
-        if (dropZone) {
-            dropZone.classList.add('hover');
-        }
-    }
-}
-
-function moveTaskBetweenSections(taskId, source, target) {
-    try {
-        // Mover de Minhas Tarefas para outra seção
-        if (source === 'minhas-tarefas' && target !== 'minhas-tarefas') {
-            const task = minhasTarefas.find(t => t.id == taskId);
-            if (task) {
-                if (target === 'lista-favoritos') {
-                    favoritos.push({pessoa: 'Minhas Tarefas', tarefa: task.titulo});
-                    saveFavoritos();
-                } else {
-                    if (!tarefasPorPessoa[target]) {
-                        tarefasPorPessoa[target] = [];
-                        if (!accordionOrder.includes(target)) {
-                            accordionOrder.push(target);
-                            saveAccordionOrder();
-                        }
-                    }
-                    tarefasPorPessoa[target].push(task.titulo);
-                    saveTarefasPorPessoa();
-                }
-                minhasTarefas = minhasTarefas.filter(t => t.id != taskId);
-                // Reordenar
-                minhasTarefas.forEach((tarefa, index) => {
-                    tarefa.ordem = index;
-                });
-                saveMinhasTarefas();
-            }
-        } 
-        // Mover de outra seção para Minhas Tarefas
-        else if (source !== 'minhas-tarefas' && target === 'minhas-tarefas') {
-            let taskText = '';
+        // Funções Drag and Drop para tarefas
+        function handleTaskDragStart(e) {
+            draggedElement = e.target.closest('.task-item');
+            draggedType = 'task';
+            draggedIndex = [...draggedElement.parentNode.children].indexOf(draggedElement);
             
-            if (source === 'lista-favoritos') {
-                const fav = favoritos.find(f => f.tarefa === taskId);
-                if (fav) {
-                    taskText = fav.tarefa;
-                    favoritos = favoritos.filter(f => f.tarefa !== taskId);
-                    saveFavoritos();
-                }
-            } else {
-                if (tarefasPorPessoa[source]) {
-                    const index = tarefasPorPessoa[source].indexOf(taskId);
-                    if (index !== -1) {
-                        taskText = taskId;
-                        tarefasPorPessoa[source].splice(index, 1);
-                        saveTarefasPorPessoa();
-                    }
-                }
-            }
+            // Armazena o ID da seção de origem
+            draggedSource = draggedElement.getAttribute('data-source');
             
-            if (taskText) {
-                adicionarTarefa(taskText, `Movida de ${source}`);
-            }
-        }
-        // Mover entre outras seções (não Minhas Tarefas)
-        else if (source !== 'minhas-tarefas' && target !== 'minhas-tarefas') {
-            let taskText = '';
+            draggedElement.classList.add('dragging');
+            e.dataTransfer.setData('text/plain', draggedElement.dataset.taskId);
+            e.dataTransfer.effectAllowed = 'move';
             
-            // Remover da origem
-            if (source === 'lista-favoritos') {
-                const fav = favoritos.find(f => f.tarefa === taskId);
-                if (fav) {
-                    taskText = fav.tarefa;
-                    favoritos = favoritos.filter(f => f.tarefa !== taskId);
-                    saveFavoritos();
-                }
-            } else {
-                if (tarefasPorPessoa[source]) {
-                    const index = tarefasPorPessoa[source].indexOf(taskId);
-                    if (index !== -1) {
-                        taskText = taskId;
-                        tarefasPorPessoa[source].splice(index, 1);
-                        saveTarefasPorPessoa();
-                    }
-                }
-            }
-            
-            // Adicionar ao destino
-            if (taskText) {
-                if (target === 'lista-favoritos') {
-                    const sourceName = source === 'lista-favoritos' ? 'Favoritos' : source;
-                    favoritos.push({pessoa: sourceName, tarefa: taskText});
-                    saveFavoritos();
-                } else {
-                    if (!tarefasPorPessoa[target]) {
-                        tarefasPorPessoa[target] = [];
-                        if (!accordionOrder.includes(target)) {
-                            accordionOrder.push(target);
-                            saveAccordionOrder();
-                        }
-                    }
-                    tarefasPorPessoa[target].push(taskText);
-                    saveTarefasPorPessoa();
-                }
-            }
-        }
-        
-        renderAccordion(document.getElementById("search").value.toLowerCase());
-        showStatus('Tarefa movida com sucesso!');
-    } catch (error) {
-        console.error('Erro ao mover tarefa:', error);
-        showStatus('Erro ao mover tarefa', true);
-    }
-}
-
-function handleTaskDrop(e) {
-    e.preventDefault();
-    if (draggedType !== 'task') return;
-    
-    const targetTask = e.target.closest('.task-item');
-    const targetAccordion = e.target.closest('.accordion');
-    const targetDropZone = e.target.closest('.drop-zone');
-    
-    // Se soltou em uma zona de drop
-    if (targetDropZone) {
-        const targetAccordionId = targetAccordion.getAttribute('data-accordion-id');
-        moveTaskBetweenSections(draggedTaskId, draggedSource, targetAccordionId);
-        return;
-    }
-    
-    // Se soltou em uma tarefa
-    if (targetTask && targetTask !== draggedElement) {
-        const targetAccordionId = targetAccordion.getAttribute('data-accordion-id');
-        const targetTaskId = targetTask.getAttribute('data-task-id');
-        
-        // Se for na mesma seção
-        if (targetAccordionId === draggedSource) {
-            // Reordenar dentro da mesma seção
-            if (targetAccordionId === 'minhas-tarefas') {
-                reorderMyTasks(draggedTaskId, targetTaskId, e.clientY);
-            } else if (targetAccordionId === 'lista-favoritos') {
-                reorderFavorites(draggedTaskId, targetTaskId, e.clientY);
-            } else {
-                reorderImportedTasks(draggedTaskId, targetTaskId, targetAccordionId, e.clientY);
-            }
-        } else {
-            // Mover entre seções
-            moveTaskBetweenSections(draggedTaskId, draggedSource, targetAccordionId);
-        }
-    }
-    
-    handleTaskDragEnd();
-}
-
-function reorderFavorites(draggedId, targetId, mouseY) {
-    // Encontrar os favoritos correspondentes
-    const draggedFavIndex = favoritos.findIndex(f => f.tarefa === draggedId);
-    const targetFavIndex = favoritos.findIndex(f => f.tarefa === targetId);
-    
-    if (draggedFavIndex === -1 || targetFavIndex === -1) return;
-    
-    const draggedFav = favoritos[draggedFavIndex];
-    
-    // Determinar posição
-    const targetElement = document.querySelector(`[data-task-id="${targetId}"]`);
-    const rect = targetElement.getBoundingClientRect();
-    const isBefore = mouseY < rect.top + rect.height / 2;
-    
-    // Remover da posição atual
-    favoritos.splice(draggedFavIndex, 1);
-    
-    // Calcular nova posição
-    const newIndex = isBefore ? targetFavIndex : targetFavIndex + 1;
-    const finalIndex = newIndex > draggedFavIndex ? newIndex - 1 : newIndex;
-    
-    // Inserir na nova posição
-    favoritos.splice(finalIndex, 0, draggedFav);
-    
-    saveFavoritos();
-    renderAccordion(document.getElementById("search").value.toLowerCase());
-    showStatus('Favorito reordenado com sucesso!');
-}
-
-function reorderImportedTasks(draggedId, targetId, pessoa, mouseY) {
-    if (!tarefasPorPessoa[pessoa]) return;
-    
-    const draggedIndex = tarefasPorPessoa[pessoa].indexOf(draggedId);
-    const targetIndex = tarefasPorPessoa[pessoa].indexOf(targetId);
-    
-    if (draggedIndex === -1 || targetIndex === -1) return;
-    
-    // Determinar posição
-    const targetElement = document.querySelector(`[data-task-id="${targetId}"]`);
-    const rect = targetElement.getBoundingClientRect();
-    const isBefore = mouseY < rect.top + rect.height / 2;
-    
-    // Remover da posição atual
-    const [draggedTask] = tarefasPorPessoa[pessoa].splice(draggedIndex, 1);
-    
-    // Calcular nova posição
-    const newIndex = isBefore ? targetIndex : targetIndex + 1;
-    const finalIndex = newIndex > draggedIndex ? newIndex - 1 : newIndex;
-    
-    // Inserir na nova posição
-    tarefasPorPessoa[pessoa].splice(finalIndex, 0, draggedTask);
-    
-    saveTarefasPorPessoa();
-    renderAccordion(document.getElementById("search").value.toLowerCase());
-    showStatus('Tarefa reordenada com sucesso!');
-}
-
-// Funções auxiliares para reordenação
-function reorderMyTasks(draggedId, targetId, mouseY) {
-    const draggedIndex = minhasTarefas.findIndex(t => t.id == draggedId);
-    const targetIndex = minhasTarefas.findIndex(t => t.id == targetId);
-    
-    if (draggedIndex === -1 || targetIndex === -1) return;
-    
-    const draggedTask = minhasTarefas[draggedIndex];
-    const targetTask = minhasTarefas[targetIndex];
-    
-    // Determinar posição
-    const targetElement = document.querySelector(`[data-task-id="${targetId}"]`);
-    const rect = targetElement.getBoundingClientRect();
-    const isBefore = mouseY < rect.top + rect.height / 2;
-    
-    // Remover da posição atual
-    minhasTarefas.splice(draggedIndex, 1);
-    
-    // Calcular nova posição
-    const newIndex = isBefore ? targetIndex : targetIndex + 1;
-    const finalIndex = newIndex > draggedIndex ? newIndex - 1 : newIndex;
-    
-    // Inserir na nova posição
-    minhasTarefas.splice(finalIndex, 0, draggedTask);
-    
-    // Atualizar ordens
-    minhasTarefas.forEach((task, index) => {
-        task.ordem = index;
-    });
-    
-    saveMinhasTarefas();
-    renderAccordion(document.getElementById("search").value.toLowerCase());
-    showStatus('Tarefa reordenada com sucesso!');
-}
-
-function handleTaskDragEnd() {
-    // Restaurar estado normal
-    if (draggedElement) {
-        draggedElement.classList.remove('dragging');
-    }
-    
-    // Esconder todos os indicadores e zonas de drop
-    document.querySelectorAll('.task-drop-indicator').forEach(ind => {
-        ind.classList.remove('active');
-    });
-    
-    document.querySelectorAll('.drop-zone').forEach(zone => {
-        zone.classList.remove('active', 'hover');
-    });
-    
-    // Resetar variáveis
-    draggedElement = null;
-    draggedType = null;
-    draggedSource = null;
-    draggedTaskId = null;
-}
-
-function handleTaskDropBetweenSections(taskId, source, target) {
-    // Implementação existente da função que move tarefas entre seções
-    // ... (mantenha o código atual desta função)
-}
-/* FIM - FUNÇÕES DRAG AND DROP PARA TAREFAS */
-
-        function handleTaskDragEnd(e) {
-            if (draggedElement) {
-                draggedElement.classList.remove('dragging');
-                draggedElement = null;
-                draggedType = null;
-                draggedIndex = -1;
-            }
-            // Esconder zonas de drop
-            document.querySelectorAll('.drop-zone').forEach(zone => {
-                zone.classList.remove('active', 'hover');
-            });
-            // Remover indicadores
-            document.querySelectorAll('.drop-indicator').forEach(indicator => {
-                indicator.classList.remove('active');
-            });
+            // Mostra o indicador de arraste
+            setTimeout(() => {
+                draggedElement.style.opacity = '0.4';
+            }, 0);
         }
 
         function handleTaskDragOver(e) {
             e.preventDefault();
+            e.stopPropagation();
+            
             if (draggedType !== 'task') return;
             
-            const targetLi = e.target.closest('li');
-            if (!targetLi || targetLi === draggedElement) return;
+            const targetTask = e.target.closest('.task-item');
+            if (!targetTask || targetTask === draggedElement) return;
             
-            // Remover indicadores anteriores
-            document.querySelectorAll('.drop-indicator').forEach(indicator => {
-                indicator.classList.remove('active');
-            });
+            // Permitir drop explicitamente
+            e.dataTransfer.dropEffect = 'move';
             
-            // Determinar posição (acima ou abaixo)
-            const rect = targetLi.getBoundingClientRect();
+            // Remove indicadores anteriores
+            document.querySelectorAll('.task-drop-indicator').forEach(ind => ind.classList.remove('active'));
+            
+            // Calcula posição relativa
+            const rect = targetTask.getBoundingClientRect();
             const midY = rect.top + rect.height / 2;
-            const isAbove = e.clientY < midY;
+            const isBefore = e.clientY < midY;
             
-            // Mostrar indicador
-            const indicator = isAbove ? 
-                targetLi.querySelector('.drop-indicator-top') :
-                targetLi.querySelector('.drop-indicator-bottom');
+            // Mostra o indicador apropriado
+            const indicator = isBefore 
+                ? targetTask.querySelector('.task-drop-indicator-top')
+                : targetTask.querySelector('.task-drop-indicator-bottom');
             
             if (indicator) {
                 indicator.classList.add('active');
             }
         }
 
-        function handleTaskReorder(e) {
-    e.preventDefault();
-    if (draggedType !== 'task') return;
-    
-    const targetLi = e.target.closest('li');
-    if (!targetLi || targetLi === draggedElement) return;
-    
-    const sourceAccordion = draggedElement.getAttribute('data-source');
-    const targetAccordion = targetLi.getAttribute('data-source');
-    
-    // Se for reordenação dentro de "Minhas Tarefas"
-    if (sourceAccordion === 'minhas-tarefas' && targetAccordion === 'minhas-tarefas') {
-        const draggedTaskId = parseInt(draggedElement.getAttribute('data-task-id'));
-        const targetIndex = Array.from(targetLi.parentNode.children).indexOf(targetLi);
-        
-        // Determinar posição
-        const rect = targetLi.getBoundingClientRect();
-        const midY = rect.top + rect.height / 2;
-        const isAbove = e.clientY < midY;
-        
-        const newIndex = isAbove ? targetIndex : targetIndex + 1;
-        
-        // Encontrar índices no array
-        const draggedIndexInArray = minhasTarefas.findIndex(t => t.id === draggedTaskId);
-        const draggedTask = minhasTarefas[draggedIndexInArray];
-        
-        if (draggedTask) {
-            // Remover do array
-            minhasTarefas.splice(draggedIndexInArray, 1);
-            
-            // Inserir na nova posição
-            const finalIndex = newIndex > draggedIndexInArray ? newIndex - 1 : newIndex;
-            minhasTarefas.splice(finalIndex, 0, draggedTask);
-            
-            // Atualizar ordem
-            minhasTarefas.forEach((tarefa, index) => {
-                tarefa.ordem = index;
-            });
-            
-            saveMinhasTarefas();
-            renderAccordion(document.getElementById("search").value.toLowerCase());
-            showStatus('Tarefa reordenada com sucesso!');
-        }
-    }
-}
-        function handleDropZoneDragOver(e) {
+        function handleTaskDrop(e) {
             e.preventDefault();
-            e.target.classList.add('hover');
-        }
-
-        function handleTaskDrop(e, targetAccordion) {
-            e.preventDefault();
-            e.target.classList.remove('hover');
+            e.stopPropagation();
             
             if (draggedType !== 'task') return;
             
-            try {
-                const taskId = draggedElement.getAttribute('data-task-id');
-                const source = draggedElement.getAttribute('data-source');
+            const targetTask = e.target.closest('.task-item');
+            if (!targetTask || targetTask === draggedElement) return;
+            
+            // Determina a posição de inserção
+            const rect = targetTask.getBoundingClientRect();
+            const midY = rect.top + rect.height / 2;
+            const isBefore = e.clientY < midY;
+            
+            // Remove indicadores
+            document.querySelectorAll('.task-drop-indicator').forEach(ind => ind.classList.remove('active'));
+            
+            // Lógica de reordenação
+            const targetSource = targetTask.getAttribute('data-source');
+            const taskId = draggedElement.getAttribute('data-task-id');
+            
+            if (draggedSource === targetSource) {
+                // Reordenação dentro da mesma seção
+                handleTaskReorderWithinSection(taskId, targetTask, isBefore, draggedSource);
+            } else {
+                // Mover entre seções diferentes
+                handleTaskDropBetweenSections(taskId, draggedSource, targetSource);
+            }
+            
+            // Restaura a aparência do elemento arrastado
+            draggedElement.style.opacity = '1';
+            draggedElement.classList.remove('dragging');
+        }
+
+        function handleTaskReorderWithinSection(taskId, targetTask, isBefore, source) {
+            if (source === 'minhas-tarefas') {
+                // Reordenação em "Minhas Tarefas"
+                const oldIndex = minhasTarefas.findIndex(t => t.id == taskId);
+                const task = minhasTarefas[oldIndex];
                 
-                if (source === 'minhas-tarefas' && targetAccordion !== 'minhas-tarefas') {
+                if (task) {
+                    const targetIndex = minhasTarefas.findIndex(t => t.id == targetTask.dataset.taskId);
+                    let newIndex = isBefore ? targetIndex : targetIndex + 1;
+                    
+                    // Ajustar índice se estiver movendo para baixo
+                    if (oldIndex < targetIndex && !isBefore) {
+                        newIndex = targetIndex;
+                    } else if (oldIndex > targetIndex && isBefore) {
+                        newIndex = targetIndex;
+                    }
+                    
+                    // Remove da posição antiga
+                    minhasTarefas.splice(oldIndex, 1);
+                    // Insere na nova posição
+                    minhasTarefas.splice(newIndex, 0, task);
+                    
+                    // Atualiza ordens
+                    minhasTarefas.forEach((t, i) => t.ordem = i);
+                    
+                    saveMinhasTarefas();
+                    renderAccordion(document.getElementById("search").value.toLowerCase());
+                    showStatus('Tarefa reordenada com sucesso!');
+                }
+            } else if (source === 'lista-favoritos') {
+                // Reordenação em "Lista de Favoritos"
+                const oldIndex = favoritos.findIndex(f => f.tarefa === taskId);
+                const fav = favoritos[oldIndex];
+                
+                if (fav) {
+                    const targetIndex = favoritos.findIndex(f => f.tarefa === targetTask.dataset.taskId);
+                    let newIndex = isBefore ? targetIndex : targetIndex + 1;
+                    
+                    // Ajustar índice se estiver movendo para baixo
+                    if (oldIndex < targetIndex && !isBefore) {
+                        newIndex = targetIndex;
+                    } else if (oldIndex > targetIndex && isBefore) {
+                        newIndex = targetIndex;
+                    }
+                    
+                    // Remove da posição antiga
+                    favoritos.splice(oldIndex, 1);
+                    // Insere na nova posição
+                    favoritos.splice(newIndex, 0, fav);
+                    
+                    saveFavoritos();
+                    renderAccordion(document.getElementById("search").value.toLowerCase());
+                    showStatus('Favorito reordenado com sucesso!');
+                }
+            } else {
+                // Reordenação em tarefas importadas
+                if (tarefasPorPessoa[source]) {
+                    const oldIndex = tarefasPorPessoa[source].findIndex(t => t === taskId);
+                    const task = tarefasPorPessoa[source][oldIndex];
+                    
+                    if (task) {
+                        const targetIndex = tarefasPorPessoa[source].findIndex(t => t === targetTask.dataset.taskId);
+                        let newIndex = isBefore ? targetIndex : targetIndex + 1;
+                        
+                        // Ajustar índice se estiver movendo para baixo
+                        if (oldIndex < targetIndex && !isBefore) {
+                            newIndex = targetIndex;
+                        } else if (oldIndex > targetIndex && isBefore) {
+                            newIndex = targetIndex;
+                        }
+                        
+                        // Remove da posição antiga
+                        tarefasPorPessoa[source].splice(oldIndex, 1);
+                        // Insere na nova posição
+                        tarefasPorPessoa[source].splice(newIndex, 0, task);
+                        
+                        saveTarefasPorPessoa();
+                        renderAccordion(document.getElementById("search").value.toLowerCase());
+                        showStatus('Tarefa importada reordenada com sucesso!');
+                    }
+                }
+            }
+        }
+
+        function handleTaskDropBetweenSections(taskId, source, target) {
+            try {
+                if (source === 'minhas-tarefas' && target !== 'minhas-tarefas') {
                     // Mover de Minhas Tarefas para outro acordeão
                     const tarefa = minhasTarefas.find(t => t.id == taskId);
                     if (tarefa) {
-                        if (targetAccordion === 'lista-favoritos') {
+                        if (target === 'lista-favoritos') {
                             favoritos.push({pessoa: 'Minhas Tarefas', tarefa: tarefa.titulo});
                             saveFavoritos();
                         } else {
-                            if (!tarefasPorPessoa[targetAccordion]) {
-                                tarefasPorPessoa[targetAccordion] = [];
+                            if (!tarefasPorPessoa[target]) {
+                                tarefasPorPessoa[target] = [];
                             }
-                            tarefasPorPessoa[targetAccordion].push(tarefa.titulo);
+                            tarefasPorPessoa[target].push(tarefa.titulo);
                             saveTarefasPorPessoa();
                         }
                         minhasTarefas = minhasTarefas.filter(t => t.id != taskId);
@@ -2084,7 +1773,7 @@ function handleTaskDropBetweenSections(taskId, source, target) {
                         });
                         saveMinhasTarefas();
                     }
-                } else if (source !== 'minhas-tarefas' && targetAccordion === 'minhas-tarefas') {
+                } else if (source !== 'minhas-tarefas' && target === 'minhas-tarefas') {
                     // Mover de outro acordeão para Minhas Tarefas
                     let tarefaTexto = '';
                     
@@ -2119,197 +1808,340 @@ function handleTaskDropBetweenSections(taskId, source, target) {
             }
         }
 
-		/* INÍCIO - FUNÇÃO CREATE IMPORTED TASK */
-function createImportedTask(pessoa, tarefa, accordionId) {
-    const li = document.createElement("div");
-    li.className = "task-item imported-task";
-    li.setAttribute('data-task-id', tarefa);
-    li.setAttribute('data-source', accordionId);
-    li.draggable = true;
-
-    li.innerHTML = `
-        <div class="task-drop-indicator task-drop-indicator-top"></div>
-        <div class="task-content">
-            <div class="task-drag-handle">⋮⋮</div>
-            <div class="task-info">
-                <div class="task-title">${tarefa}</div>
-                <div class="task-source">De: ${pessoa}</div>
-            </div>
-            <div class="task-actions">
-                <button class="task-menu-button">⋮</button>
-                <div class="task-action-buttons" id="actions-${accordionId}-${tarefa.replace(/\s+/g, '-')}">
-                    <button class="task-action-btn btn-favorite" title="Favoritar">⭐</button>
-                    <button class="task-action-btn btn-delete" title="Excluir">🗑️</button>
-                </div>
-            </div>
-        </div>
-        <div class="task-drop-indicator task-drop-indicator-bottom"></div>
-    `;
-    
-    // Drag events
-    const dragHandle = li.querySelector('.task-drag-handle');
-    dragHandle.addEventListener('dragstart', handleTaskDragStart);
-    dragHandle.addEventListener('dragend', handleTaskDragEnd);
-    
-    li.addEventListener('dragover', handleTaskDragOver);
-    li.addEventListener('drop', handleTaskDrop);
-    li.addEventListener('dragend', handleTaskDragEnd);
-    
-    // Menu events
-    const menuBtn = li.querySelector('.task-menu-button');
-    menuBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        document.querySelectorAll('.task-action-buttons').forEach(btn => {
-            if (btn.id !== `actions-${accordionId}-${tarefa.replace(/\s+/g, '-')}`) {
-                btn.classList.remove('show');
+        function handleTaskDragEnd() {
+            if (draggedElement) {
+                draggedElement.style.opacity = '1';
+                draggedElement.classList.remove('dragging');
             }
-        });
-        li.querySelector('.task-action-buttons').classList.toggle('show');
-    });
-
-    // Button events
-    li.querySelector('.btn-favorite').addEventListener('click', (e) => {
-        e.stopPropagation();
-        toggleFavorite(pessoa, tarefa);
-    });
-
-    li.querySelector('.btn-delete').addEventListener('click', (e) => {
-        e.stopPropagation();
-        removeTask(pessoa, tarefa);
-    });
-
-    return li;
-}/* FIM - FUNÇÃO */
-
-    function createMinhasTarefasAccordion(filtro = "") {
-    const filteredMinhasTarefas = minhasTarefas.filter(
-        (t) => t.titulo.toLowerCase().includes(filtro) || 
-               t.descricao.toLowerCase().includes(filtro)
-    );
-
-    if (filtro && filteredMinhasTarefas.length === 0) return null;
-
-    const acc = document.createElement("div");
-    acc.className = "accordion";
-    acc.setAttribute('data-accordion-id', 'minhas-tarefas');
-
-    // Header
-    const header = document.createElement("div");
-    header.className = "accordion-header";
-    
-    const headerContent = document.createElement("div");
-    headerContent.className = "accordion-header-content";
-    
-    const title = document.createElement("div");
-    title.className = "accordion-title";
-    title.innerHTML = `<span>Minhas Tarefas (${filteredMinhasTarefas.length})</span>`;
-    
-    const newTaskBtn = document.createElement("button");
-    newTaskBtn.className = "new-task-button";
-    newTaskBtn.textContent = "+ Nova Tarefa";
-    newTaskBtn.onclick = openTaskModal;
-    
-    headerContent.appendChild(title);
-    header.appendChild(headerContent);
-    header.appendChild(newTaskBtn);
-    
-    header.onclick = function(e) {
-        if (!e.target.classList.contains('new-task-button')) {
-            this.nextElementSibling.classList.toggle('active');
+            document.querySelectorAll('.task-drop-indicator').forEach(ind => ind.classList.remove('active'));
+            document.querySelectorAll('.drop-zone').forEach(zone => {
+                zone.classList.remove('active', 'hover');
+            });
+            document.querySelectorAll('.drop-indicator').forEach(indicator => {
+                indicator.classList.remove('active');
+            });
+            draggedElement = null;
+            draggedType = null;
+            draggedIndex = -1;
+            draggedSource = null;
         }
-    };
 
-    // Content
-    const content = document.createElement("div");
-    content.className = "accordion-content active";
-    
-    const ul = document.createElement("ul");
-    ul.className = "task-list";
+        function handleDropZoneDragOver(e) {
+            e.preventDefault();
+            e.target.classList.add('hover');
+        }
 
-    filteredMinhasTarefas.sort((a, b) => (a.ordem || 0) - (b.ordem || 0)).forEach((tarefa) => {
-        const li = document.createElement("li");
-        li.className = "task-item";
-        if (tarefa.concluida) li.classList.add('task-completed');
-        li.setAttribute('data-task-id', tarefa.id);
-        li.setAttribute('data-source', 'minhas-tarefas');
-        li.draggable = true;
+        function handleTaskDropZone(e, targetAccordion) {
+            e.preventDefault();
+            e.target.classList.remove('hover');
+            
+            if (draggedType !== 'task') return;
+            
+            try {
+                const taskId = draggedElement.getAttribute('data-task-id');
+                const source = draggedElement.getAttribute('data-source');
+                
+                handleTaskDropBetweenSections(taskId, source, targetAccordion);
+            } catch (error) {
+                console.error('Erro ao mover tarefa:', error);
+                showStatus('Erro ao mover tarefa', true);
+            }
+        }
 
-          li.innerHTML = `
-        <div class="task-drop-indicator task-drop-indicator-top"></div>
-        <div class="task-content">
-            <div class="task-drag-handle" draggable="true">⋮⋮</div>
-            <div class="task-info">
-                <div class="task-title">${tarefa.titulo}</div>
-                ${tarefa.descricao ? `<div class="task-description">${tarefa.descricao}</div>` : ""}
-                <div class="task-date">Criada em: ${tarefa.dataCreacao}</div>
-            </div>
-            <div class="task-actions">
-                <button class="task-menu-button">⋮</button>
-                <div class="task-action-buttons" id="actions-${tarefa.id}">
-                    <button class="task-action-btn btn-complete" title="${tarefa.concluida ? 'Reabrir' : 'Concluir'}">
+        // Função para criar tarefa importada
+        function createImportedTask(pessoa, tarefa, accordionId) {
+            const li = document.createElement("div");
+            li.className = "task-item imported-task";
+            li.setAttribute('data-task-id', tarefa);
+            li.setAttribute('data-source', accordionId);
+            li.draggable = false; // O drag será feito pelo handle
+
+            const isFavorito = favoritos.some(f => f.pessoa === pessoa && f.tarefa === tarefa);
+            
+            li.innerHTML = `
+                <div class="task-drop-indicator task-drop-indicator-top"></div>
+                <div class="task-content">
+                    <div class="task-drag-handle" draggable="true">⋮⋮</div>
+                    <div class="task-info">
+                        <div class="task-title">${tarefa}</div>
+                        <div class="task-source">De: ${pessoa}</div>
+                    </div>
+                    <div class="task-actions">
+                        <button class="task-menu-button">⋮</button>
+                        <div class="task-action-buttons" id="actions-${accordionId}-${tarefa.replace(/\s+/g, '-')}">
+                            <button class="task-action-btn btn-favorite" title="${isFavorito ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}">
+                                ${isFavorito ? '⭐' : '☆'}
+                            </button>
+                            <button class="task-action-btn btn-delete" title="Excluir">🗑️</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="task-drop-indicator task-drop-indicator-bottom"></div>
+            `;
+            
+            // Eventos de drag corrigidos
+            const dragHandle = li.querySelector('.task-drag-handle');
+            dragHandle.addEventListener('dragstart', handleTaskDragStart);
+            dragHandle.addEventListener('dragend', handleTaskDragEnd);
+            
+            // Eventos de drop no elemento li
+            li.addEventListener('dragover', handleTaskDragOver);
+            li.addEventListener('drop', handleTaskDrop);
+            
+            // Eventos dos botões
+            const menuBtn = li.querySelector('.task-menu-button');
+            menuBtn.onclick = (e) => {
+                e.stopPropagation();
+                const buttons = li.querySelector('.task-action-buttons');
+                buttons.classList.toggle('show');
+            };
+
+            li.querySelector('.btn-favorite').onclick = (e) => {
+                e.stopPropagation();
+                toggleFavorite(pessoa, tarefa, accordionId);
+            };
+
+            li.querySelector('.btn-delete').onclick = (e) => {
+                e.stopPropagation();
+                removeTask(pessoa, tarefa);
+            };
+
+            return li;
+        }
+
+        // Função para criar estrela de favoritos
+        function createStar(pessoa, tarefa) {
+            const star = document.createElement("span");
+            star.className = "star";
+            star.innerHTML = "⭐";
+            if (favoritos.some(f => f.pessoa === pessoa && f.tarefa === tarefa)) {
+                star.classList.add("favorited");
+            }
+            star.onclick = function () {
+                toggleFavorite(pessoa, tarefa);
+            };
+            return star;
+        }
+
+        // Função para criar ícone de confirmação
+        function createConfirmIcon(pessoa, tarefa) {
+            const confirmIcon = document.createElement("span");
+            confirmIcon.className = "confirm-icon";
+            confirmIcon.innerHTML = "✔️";
+            confirmIcon.onclick = function () {
+                favoritos = favoritos.filter(f => !(f.pessoa === pessoa && f.tarefa === tarefa));
+                saveFavoritos();
+                adicionarTarefa(tarefa, `Tarefa importada de ${pessoa}`);
+                renderAccordion(document.getElementById("search").value.toLowerCase());
+            };
+            return confirmIcon;
+        }
+
+        // Função para criar ícone de lixeira
+        function createTrashIcon(pessoa, tarefa) {
+            const trash = document.createElement("span");
+            trash.className = "trash-icon";
+            trash.innerHTML = "🗑️";
+            trash.onclick = function () {
+                if (confirm(`Remover "${tarefa}" da lista de ${pessoa}?`)) {
+                    favoritos = favoritos.filter(f => !(f.pessoa === pessoa && f.tarefa === tarefa));
+                    saveFavoritos();
+                    renderAccordion(document.getElementById("search").value.toLowerCase());
+                }
+            };
+            return trash;
+        }
+
+        function createMinhasTarefasAccordion(filtro = "") {
+            const filteredMinhasTarefas = minhasTarefas.filter(
+                (t) =>
+                    t.titulo.toLowerCase().includes(filtro) ||
+                    t.descricao.toLowerCase().includes(filtro)
+            );
+
+            if (filtro && filteredMinhasTarefas.length === 0) {
+                return null;
+            }
+
+            const acc = document.createElement("div");
+            acc.className = "accordion";
+            acc.setAttribute('data-accordion-id', 'minhas-tarefas');
+
+            // Indicadores de drop para acordeão
+            const dropIndicatorTop = document.createElement("div");
+            dropIndicatorTop.className = "drop-indicator drop-indicator-top";
+            
+            const dropIndicatorBottom = document.createElement("div");
+            dropIndicatorBottom.className = "drop-indicator drop-indicator-bottom";
+
+            const header = document.createElement("div");
+            header.className = "accordion-header";
+            
+            const headerContent = document.createElement("div");
+            headerContent.className = "accordion-header-content";
+            
+            const title = document.createElement("div");
+            title.className = "accordion-title";
+            title.innerHTML = `<span>Minhas Tarefas (${filteredMinhasTarefas.length})</span>`;
+            
+            const newTaskBtn = document.createElement("button");
+            newTaskBtn.className = "new-task-button";
+            newTaskBtn.textContent = "+ Nova Tarefa";
+            newTaskBtn.onclick = openTaskModal;
+            
+            headerContent.appendChild(title);
+            header.appendChild(headerContent);
+            header.appendChild(newTaskBtn);
+            
+            const isOpen = getAccordionState('minhas-tarefas');
+            header.onclick = function (e) {
+                if (e.target.tagName !== "BUTTON") {
+                    const content = this.nextElementSibling;
+                    const newState = content.style.display !== "block";
+                    content.style.display = newState ? "block" : "none";
+                    saveAccordionState('minhas-tarefas', newState);
+                }
+            };
+
+            const content = document.createElement("div");
+            content.className = "accordion-content";
+            content.style.display = isOpen ? "block" : "none";
+
+            const dropZone = document.createElement("div");
+            dropZone.className = "drop-zone";
+            dropZone.innerHTML = "Solte tarefas aqui para mover para Minhas Tarefas";
+            dropZone.addEventListener('dragover', handleDropZoneDragOver);
+            dropZone.addEventListener('drop', (e) => handleTaskDropZone(e, 'minhas-tarefas'));
+
+            const ul = document.createElement("ul");
+
+            // Ordenar tarefas por ordem
+            filteredMinhasTarefas.sort((a, b) => (a.ordem || 0) - (b.ordem || 0));
+
+            filteredMinhasTarefas.forEach((tarefa) => {
+                const li = document.createElement("li");
+                li.className = "task-item";
+                if (tarefa.concluida) {
+                    li.classList.add('task-completed');
+                }
+                li.setAttribute('data-task-id', tarefa.id);
+                li.setAttribute('data-source', 'minhas-tarefas');
+
+                // Indicadores de drop para tarefa
+                const taskDropIndicatorTop = document.createElement("div");
+                taskDropIndicatorTop.className = "task-drop-indicator task-drop-indicator-top";
+                
+                const taskDropIndicatorBottom = document.createElement("div");
+                taskDropIndicatorBottom.className = "task-drop-indicator task-drop-indicator-bottom";
+
+                const dragHandle = document.createElement("div");
+                dragHandle.className = "task-drag-handle";
+                dragHandle.innerHTML = "⋮⋮";
+                dragHandle.draggable = true;
+                dragHandle.addEventListener('dragstart', handleTaskDragStart);
+                dragHandle.addEventListener('dragend', handleTaskDragEnd);
+
+                const taskContent = document.createElement("div");
+                taskContent.className = "task-content";
+                
+                const taskInfo = document.createElement("div");
+                taskInfo.className = "task-info";
+                
+                // Destacar texto da pesquisa
+                const titulo = highlightSearchText(tarefa.titulo, filtro);
+                const descricao = tarefa.descricao ? highlightSearchText(tarefa.descricao, filtro) : "";
+                
+                taskInfo.innerHTML = `
+                    <div class="task-title">${titulo}</div>
+                    ${descricao ? `<div class="task-description">${descricao}</div>` : ""}
+                    <div class="task-date">Criada em: ${tarefa.dataCreacao}</div>
+                `;
+
+                const actions = document.createElement("div");
+                actions.className = "task-actions";
+                
+                const menuButton = document.createElement("button");
+                menuButton.className = "task-menu-button";
+                menuButton.innerHTML = "⋮";
+                menuButton.onclick = (e) => {
+                    e.stopPropagation();
+                    toggleTaskActions(tarefa.id);
+                };
+                
+                const actionButtons = document.createElement("div");
+                actionButtons.className = "task-action-buttons";
+                actionButtons.id = `actions-${tarefa.id}`;
+                actionButtons.innerHTML = `
+                    <button class="task-action-btn btn-complete" onclick="toggleConcluida(${tarefa.id})" title="${tarefa.concluida ? 'Reabrir' : 'Concluir'}">
                         ${tarefa.concluida ? '↩️' : '✅'}
                     </button>
-                    <button class="task-action-btn btn-edit" title="Editar">
+                    <button class="task-action-btn btn-edit" onclick="editarTarefaForm(${tarefa.id})" title="Editar">
                         ✏️
                     </button>
-                    <button class="task-action-btn btn-delete" title="Excluir">
+                    <button class="task-action-btn btn-delete" onclick="excluirTarefa(${tarefa.id})" title="Excluir">
                         🗑️
                     </button>
-                </div>
-            </div>
-        </div>
-        <div class="task-drop-indicator task-drop-indicator-bottom"></div>
-    `;
+                `;
 
-        // Drag events
-        li.querySelector('.task-drag-handle').addEventListener('dragstart', handleTaskDragStart);
-        li.addEventListener('dragend', handleTaskDragEnd);
+                const editForm = document.createElement("div");
+                editForm.className = "edit-form";
+                editForm.id = `edit-form-${tarefa.id}`;
+                editForm.innerHTML = `
+                    <input type="text" id="edit-title-${tarefa.id}" value="${tarefa.titulo}" placeholder="Título">
+                    <input type="text" id="edit-desc-${tarefa.id}" value="${tarefa.descricao || ""}" placeholder="Descrição">
+                    <div class="form-buttons">
+                        <button class="modal-btn modal-btn-primary" onclick="salvarEdicao(${tarefa.id})">Salvar</button>
+                        <button class="modal-btn modal-btn-secondary" onclick="cancelarEdicao(${tarefa.id})">Cancelar</button>
+                    </div>
+                `;
 
-        // Menu events
-        const menuBtn = li.querySelector('.task-menu-button');
-        menuBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            document.querySelectorAll('.task-action-buttons').forEach(btn => {
-                if (btn.id !== `actions-${tarefa.id}`) btn.classList.remove('show');
+                taskContent.appendChild(dragHandle);
+                taskContent.appendChild(taskInfo);
+                actions.appendChild(menuButton);
+                actions.appendChild(actionButtons);
+                taskContent.appendChild(actions);
+                
+                li.appendChild(taskDropIndicatorTop);
+                li.appendChild(taskContent);
+                li.appendChild(editForm);
+                li.appendChild(taskDropIndicatorBottom);
+                
+                li.addEventListener('dragover', handleTaskDragOver);
+                li.addEventListener('drop', handleTaskDrop);
+                ul.appendChild(li);
             });
-            li.querySelector('.task-action-buttons').classList.toggle('show');
-        });
 
-        // Button events
-        li.querySelector('.btn-complete').addEventListener('click', (e) => {
-            e.stopPropagation();
-            toggleConcluida(tarefa.id);
-        });
+            content.appendChild(dropZone);
+            content.appendChild(ul);
+            
+            acc.appendChild(dropIndicatorTop);
+            acc.appendChild(header);
+            acc.appendChild(content);
+            acc.appendChild(dropIndicatorBottom);
 
-        li.querySelector('.btn-edit').addEventListener('click', (e) => {
-            e.stopPropagation();
-            editarTarefaForm(tarefa.id);
-        });
+            acc.addEventListener('dragover', handleAccordionDragOver);
+            acc.addEventListener('drop', handleAccordionDrop);
 
-        li.querySelector('.btn-delete').addEventListener('click', (e) => {
-            e.stopPropagation();
-            excluirTarefa(tarefa.id);
-        });
+            return acc;
+        }
 
-        ul.appendChild(li);
-    });
+        // Função para destacar texto da pesquisa
+        function highlightSearchText(text, searchTerm) {
+            if (!searchTerm || !text) return text;
+            
+            const regex = new RegExp(searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+            return text.replace(regex, match => `<span class="highlight">${match}</span>`);
+        }
 
-    content.appendChild(ul);
-    acc.appendChild(header);
-    acc.appendChild(content);
-
-    return acc;
-}
-
-function editarTarefaForm(id) {
-    const tarefa = minhasTarefas.find(t => t.id === id);
-    if (tarefa) {
-        editandoTarefa = tarefa;
-        document.getElementById('taskTitle').value = tarefa.titulo;
-        document.getElementById('taskDescription').value = tarefa.descricao || '';
-        openTaskModal();
-    }
-}
+        function editarTarefaForm(id) {
+            const tarefa = minhasTarefas.find(t => t.id === id);
+            if (tarefa) {
+                editandoTarefa = tarefa;
+                document.getElementById('taskTitle').value = tarefa.titulo;
+                document.getElementById('taskDescription').value = tarefa.descricao || '';
+                openTaskModal();
+            }
+        }
 
         function salvarEdicao(id) {
             const novoTitulo = document.getElementById(`edit-title-${id}`).value.trim();
@@ -2333,475 +2165,319 @@ function editarTarefaForm(id) {
             document.getElementById(`edit-form-${id}`).style.display = "none";
         }
 
-        function createTrashIcon(pessoa, tarefa, tipoLista) {
-            const trash = document.createElement("span");
-            trash.className = "trash-icon";
-            trash.innerHTML = "🗑️";
-            trash.onclick = function () {
-                if (confirm("Tem certeza que deseja excluir esta tarefa?")) {
-                    if (tipoLista === "favoritos") {
-                        favoritos = favoritos.filter(
-                            (f) => !(f.pessoa === pessoa && f.tarefa === tarefa)
-                        );
-                        saveFavoritos();
-                    } else if (tipoLista === "tarefasPorPessoa") {
-                        tarefasPorPessoa[pessoa] = tarefasPorPessoa[pessoa].filter(
-                            (t) => t !== tarefa
-                        );
+        function renderAccordion(filtro = "") {
+            const container = document.getElementById("accordion-container");
+            container.innerHTML = "";
+
+            // Renderizar acordeões na ordem salva
+            accordionOrder.forEach(accordionId => {
+                if (accordionId === 'minhas-tarefas') {
+                    const minhasTarefasAccordion = createMinhasTarefasAccordion(filtro);
+                    if (minhasTarefasAccordion) {
+                        container.appendChild(minhasTarefasAccordion);
+                    }
+                } else if (accordionId === 'lista-favoritos') {
+                    const favoritosFiltrados = favoritos.filter(
+                        (f) =>
+                            f.tarefa.toLowerCase().includes(filtro) ||
+                            f.pessoa.toLowerCase().includes(filtro)
+                    );
+                    if (favoritosFiltrados.length > 0 || !filtro) {
+                        const acc = document.createElement("div");
+                        acc.className = "accordion";
+                        acc.setAttribute('data-accordion-id', 'lista-favoritos');
+                        
+                        // Indicadores de drop
+
+                        const dropIndicatorTop = document.createElement("div");
+                        dropIndicatorTop.className = "drop-indicator drop-indicator-top";
+                        
+                        const dropIndicatorBottom = document.createElement("div");
+                        dropIndicatorBottom.className = "drop-indicator drop-indicator-bottom";
+                        
+                        const header = document.createElement("div");
+                        header.className = "accordion-header";
+                        
+                        const headerContent = document.createElement("div");
+                        headerContent.className = "accordion-header-content";
+                        
+                        const title = document.createElement("div");
+                        title.className = "accordion-title";
+                        title.innerHTML = `<span>Lista de Favoritos (${favoritosFiltrados.length})</span>`;
+                        
+                        headerContent.appendChild(title);
+                        header.appendChild(headerContent);
+                        
+                        const isOpen = getAccordionState('lista-favoritos');
+                        header.onclick = function (e) {
+                            if (e.target.tagName !== "BUTTON") {
+                                const content = this.nextElementSibling;
+                                const newState = content.style.display !== "block";
+                                content.style.display = newState ? "block" : "none";
+                                saveAccordionState('lista-favoritos', newState);
+                            }
+                        };
+                        
+                        const content = document.createElement("div");
+                        content.className = "accordion-content";
+                        content.style.display = isOpen ? "block" : "none";
+                        
+                        const dropZone = document.createElement("div");
+                        dropZone.className = "drop-zone";
+                        dropZone.innerHTML = "Solte tarefas aqui para adicionar aos favoritos";
+                        dropZone.addEventListener('dragover', handleDropZoneDragOver);
+                        dropZone.addEventListener('drop', (e) => handleTaskDropZone(e, 'lista-favoritos'));
+                        
+                        const ul = document.createElement("ul");
+                        favoritosFiltrados.forEach(({ pessoa, tarefa }) => {
+                            const li = document.createElement("li");
+                            li.className = "task-item";
+                            li.setAttribute('data-task-id', tarefa);
+                            li.setAttribute('data-source', 'lista-favoritos');
+                            
+                            // Indicadores de drop para tarefa
+                            const taskDropIndicatorTop = document.createElement("div");
+                            taskDropIndicatorTop.className = "task-drop-indicator task-drop-indicator-top";
+                            
+                            const taskDropIndicatorBottom = document.createElement("div");
+                            taskDropIndicatorBottom.className = "task-drop-indicator task-drop-indicator-bottom";
+
+                            const dragHandle = document.createElement("div");
+                            dragHandle.className = "task-drag-handle";
+                            dragHandle.innerHTML = "⋮⋮";
+                            dragHandle.draggable = true;
+                            dragHandle.addEventListener('dragstart', handleTaskDragStart);
+                            dragHandle.addEventListener('dragend', handleTaskDragEnd);
+                            
+                            const taskContent = document.createElement("div");
+                            taskContent.className = "task-content";
+                            
+                            const taskInfo = document.createElement("div");
+                            taskInfo.className = "task-info";
+                            
+                            // Destacar texto da pesquisa
+                            const titulo = highlightSearchText(tarefa, filtro);
+                            const pessoaText = highlightSearchText(pessoa, filtro);
+                            
+                            taskInfo.innerHTML = `
+                                <div class="task-title">${titulo}</div>
+                                <div class="task-description">De: ${pessoaText}</div>
+                            `;
+                            
+                            const actions = document.createElement("div");
+                            actions.className = "task-actions";
+                            
+                            const menuButton = document.createElement("button");
+                            menuButton.className = "task-menu-button";
+                            menuButton.innerHTML = "⋮";
+                            menuButton.onclick = (e) => {
+                                e.stopPropagation();
+                                toggleTaskActions(`lista-favoritos-${tarefa.replace(/\s+/g, '-')}`);
+                            };
+                            
+                            const actionButtons = document.createElement("div");
+                            actionButtons.className = "task-action-buttons";
+                            actionButtons.id = `actions-lista-favoritos-${tarefa.replace(/\s+/g, '-')}`;
+                            actionButtons.innerHTML = `
+                                <button class="task-action-btn btn-favorite" title="Remover dos favoritos" onclick="toggleFavorite('${pessoa}', '${tarefa}', 'lista-favoritos')">
+                                    ⭐
+                                </button>
+                                <button class="task-action-btn btn-delete" title="Excluir" onclick="removeTask('${pessoa}', '${tarefa}')">
+                                    🗑️
+                                </button>
+                            `;
+                            
+                            taskContent.appendChild(dragHandle);
+                            taskContent.appendChild(taskInfo);
+                            actions.appendChild(menuButton);
+                            actions.appendChild(actionButtons);
+                            taskContent.appendChild(actions);
+                            
+                            li.appendChild(taskDropIndicatorTop);
+                            li.appendChild(taskContent);
+                            li.appendChild(taskDropIndicatorBottom);
+                            
+                            li.addEventListener('dragover', handleTaskDragOver);
+                            li.addEventListener('drop', handleTaskDrop);
+                            ul.appendChild(li);
+                        });
+                        
+                        content.appendChild(dropZone);
+                        content.appendChild(ul);
+                        
+                        acc.appendChild(dropIndicatorTop);
+                        acc.appendChild(header);
+                        acc.appendChild(content);
+                        acc.appendChild(dropIndicatorBottom);
+                        
+                        acc.addEventListener('dragover', handleAccordionDragOver);
+                        acc.addEventListener('drop', handleAccordionDrop);
+                        
+                        container.appendChild(acc);
+                    }
+                } else if (tarefasPorPessoa[accordionId]) {
+                    const tarefasFiltradas = tarefasPorPessoa[accordionId].filter(
+                        (t) => t.toLowerCase().includes(filtro)
+                    );
+                    if (tarefasFiltradas.length > 0 || accordionId.toLowerCase().includes(filtro)) {
+                        const acc = document.createElement("div");
+                        acc.className = "accordion";
+                        acc.setAttribute('data-accordion-id', accordionId);
+
+                        // Indicadores de drop
+                        const dropIndicatorTop = document.createElement("div");
+                        dropIndicatorTop.className = "drop-indicator drop-indicator-top";
+                        
+                        const dropIndicatorBottom = document.createElement("div");
+                        dropIndicatorBottom.className = "drop-indicator drop-indicator-bottom";
+
+                        const header = document.createElement("div");
+                        header.className = "accordion-header";
+                        
+                        const headerContent = document.createElement("div");
+                        headerContent.className = "accordion-header-content";
+                        
+                        const dragHandle = document.createElement("div");
+                        dragHandle.className = "drag-handle";
+                        dragHandle.innerHTML = "⋮⋮";
+                        dragHandle.draggable = true;
+                        dragHandle.addEventListener('dragstart', handleAccordionDragStart);
+                        dragHandle.addEventListener('dragend', handleAccordionDragEnd);
+                        
+                        const title = document.createElement("div");
+                        title.className = "accordion-title";
+                        title.innerHTML = `
+                            <span>${accordionId} (${tarefasFiltradas.length})</span>
+                            <input type="text" value="${accordionId}" style="display: none;">
+                        `;
+                        
+                        const editBtn = document.createElement("button");
+                        editBtn.className = "edit-btn";
+                        editBtn.innerHTML = "✎";
+                        editBtn.onclick = (e) => {
+                            e.stopPropagation();
+                            editAccordionTitle(accordionId);
+                        };
+                        
+                        // Event listeners para o input
+                        const titleInput = title.querySelector('input');
+                        titleInput.addEventListener('blur', () => {
+                            saveAccordionTitle(accordionId, titleInput.value);
+                        });
+                        titleInput.addEventListener('keypress', (e) => {
+                            if (e.key === 'Enter') {
+                                titleInput.blur();
+                            }
+                        });
+                        
+                        headerContent.appendChild(dragHandle);
+                        headerContent.appendChild(title);
+                        header.appendChild(headerContent);
+                        header.appendChild(editBtn);
+                        
+                        const isOpen = getAccordionState(accordionId);
+                        header.onclick = function (e) {
+                            if (e.target.tagName !== "BUTTON" && e.target.tagName !== "INPUT" && !e.target.classList.contains('drag-handle')) {
+                                const content = this.nextElementSibling;
+                                const newState = content.style.display !== "block";
+                                content.style.display = newState ? "block" : "none";
+                                saveAccordionState(accordionId, newState);
+                            }
+                        };
+
+                        const content = document.createElement("div");
+                        content.className = "accordion-content";
+                        content.style.display = isOpen ? "block" : "none";
+                        
+                        const dropZone = document.createElement("div");
+                        dropZone.className = "drop-zone";
+                        dropZone.innerHTML = `Solte tarefas aqui para mover para ${accordionId}`;
+                        dropZone.addEventListener('dragover', handleDropZoneDragOver);
+                        dropZone.addEventListener('drop', (e) => handleTaskDropZone(e, accordionId));
+                        
+                        const ul = document.createElement("ul");
+                        tarefasFiltradas.forEach(tarefa => {
+                            const taskElement = createImportedTask(accordionId, tarefa, accordionId);
+                            ul.appendChild(taskElement);
+                        });
+                        
+                        content.appendChild(dropZone);
+                        content.appendChild(ul);
+
+                        acc.appendChild(dropIndicatorTop);
+                        acc.appendChild(header);
+                        acc.appendChild(content);
+                        acc.appendChild(dropIndicatorBottom);
+                        
+                        acc.addEventListener('dragover', handleAccordionDragOver);
+                        acc.addEventListener('drop', handleAccordionDrop);
+                        
+                        container.appendChild(acc);
+                    }
+                }
+            });
+
+            // Adicionar acordeões que não estão na ordem salva
+            for (let pessoa in tarefasPorPessoa) {
+                if (!accordionOrder.includes(pessoa)) {
+                    accordionOrder.push(pessoa);
+                    saveAccordionOrder();
+                }
+            }
+        }
+
+        function toggleFavorite(pessoa, tarefa, accordionId) {
+            const existsIndex = favoritos.findIndex(f => f.pessoa === pessoa && f.tarefa === tarefa);
+            
+            if (existsIndex >= 0) {
+                // Remove dos favoritos e retorna para o local de origem
+                favoritos.splice(existsIndex, 1);
+                saveFavoritos();
+                
+                // Se estava na lista de favoritos, retorna para o acordeão original
+                if (accordionId === 'lista-favoritos') {
+                    if (!tarefasPorPessoa[pessoa]) {
+                        tarefasPorPessoa[pessoa] = [];
+                    }
+                    tarefasPorPessoa[pessoa].push(tarefa);
+                    saveTarefasPorPessoa();
+                }
+            } else {
+                // Adiciona aos favoritos e remove do local de origem
+                favoritos.push({ pessoa, tarefa });
+                saveFavoritos();
+                
+                // Remove do acordeão original se não for "Minhas Tarefas"
+                if (accordionId && accordionId !== 'minhas-tarefas' && tarefasPorPessoa[pessoa]) {
+                    const taskIndex = tarefasPorPessoa[pessoa].indexOf(tarefa);
+                    if (taskIndex !== -1) {
+                        tarefasPorPessoa[pessoa].splice(taskIndex, 1);
                         saveTarefasPorPessoa();
                     }
-                    renderAccordion(document.getElementById("search").value.toLowerCase());
                 }
-            };
-            return trash;
-        }
-
-        function createConfirmIcon(pessoa, tarefa) {
-            const confirmIcon = document.createElement("span");
-            confirmIcon.className = "confirm-icon";
-            confirmIcon.innerHTML = "✔️";
-            confirmIcon.onclick = function () {
-                favoritos = favoritos.filter(
-                    (f) => !(f.pessoa === pessoa && f.tarefa === tarefa)
-                );
-                saveFavoritos();
-
-                adicionarTarefa(tarefa, `Tarefa importada de ${pessoa}`);
-
-                renderAccordion(document.getElementById("search").value.toLowerCase());
-            };
-            return confirmIcon;
-        }
-
-function renderFavoritosAccordion(filtro = "") {
-    const favoritosFiltrados = favoritos.filter(
-        (f) =>
-            f.tarefa.toLowerCase().includes(filtro) ||
-            f.pessoa.toLowerCase().includes(filtro)
-    );
-
-    if (favoritosFiltrados.length === 0 && filtro) return null;
-
-    const acc = document.createElement("div");
-    acc.className = "accordion";
-    acc.setAttribute('data-accordion-id', 'lista-favoritos');
-
-    // Drop indicators
-    const dropIndicatorTop = document.createElement("div");
-    dropIndicatorTop.className = "drop-indicator drop-indicator-top";
-    
-    const dropIndicatorBottom = document.createElement("div");
-    dropIndicatorBottom.className = "drop-indicator drop-indicator-bottom";
-
-    // Header
-    const header = document.createElement("div");
-    header.className = "accordion-header";
-    
-    const headerContent = document.createElement("div");
-    headerContent.className = "accordion-header-content";
-    
-    const title = document.createElement("div");
-    title.className = "accordion-title";
-    title.innerHTML = `<span>Lista de Favoritos (${favoritosFiltrados.length})</span>`;
-    
-    headerContent.appendChild(title);
-    header.appendChild(headerContent);
-    
-    header.onclick = function(e) {
-        if (e.target.tagName !== "BUTTON" && !e.target.classList.contains('task-menu-button')) {
-            this.nextElementSibling.style.display = this.nextElementSibling.style.display === "block" ? "none" : "block";
-        }
-    };
-
-    // Content
-    const content = document.createElement("div");
-    content.className = "accordion-content";
-    
-    const dropZone = document.createElement("div");
-    dropZone.className = "drop-zone";
-    dropZone.innerHTML = "Solte tarefas aqui para adicionar aos favoritos";
-    dropZone.addEventListener('dragover', handleDropZoneDragOver);
-    dropZone.addEventListener('drop', (e) => handleTaskDrop(e, 'lista-favoritos'));
-    
-    const ul = document.createElement("ul");
-    
-    favoritosFiltrados.forEach(({ pessoa, tarefa }) => {
-        const li = document.createElement("li");
-        li.className = "task-item imported-task";
-        li.setAttribute('data-task-id', tarefa);
-        li.setAttribute('data-source', 'lista-favoritos');
-        li.draggable = true;
-        
-        li.innerHTML = `
-        <div class="task-drop-indicator task-drop-indicator-top"></div>
-        <div class="task-content">
-            <div class="task-drag-handle" draggable="true">⋮⋮</div>
-            <div class="task-info">
-                <div class="task-title">${tarefa}</div>
-                <div class="task-description">De: ${pessoa}</div>
-            </div>
-            <div class="task-actions">
-                <button class="task-menu-button">⋮</button>
-                <div class="task-action-buttons" id="actions-fav-${tarefa.replace(/\s+/g, '-')}">
-                    <button class="task-action-btn btn-favorite" title="${isFavorited(pessoa, tarefa) ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}">
-                        ${isFavorited(pessoa, tarefa) ? '★' : '☆'}
-                    </button>
-                    <button class="task-action-btn btn-confirm" title="Mover para Minhas Tarefas">✔️</button>
-                    <button class="task-action-btn btn-delete" title="Excluir">🗑️</button>
-                </div>
-            </div>
-        </div>
-        <div class="task-drop-indicator task-drop-indicator-bottom"></div>
-    `;
-        
-        // Drag events
-        li.querySelector('.task-drag-handle').addEventListener('dragstart', handleTaskDragStart);
-        li.addEventListener('dragover', handleTaskDragOver);
-        li.addEventListener('drop', handleTaskDrop);
-        li.addEventListener('dragend', handleTaskDragEnd);
-        
-        // Action buttons events
-        const menuBtn = li.querySelector('.task-menu-button');
-        menuBtn.onclick = (e) => {
-            e.stopPropagation();
-            const buttons = li.querySelector('.task-action-buttons');
-            buttons.classList.toggle('show');
-        };
-
-        li.querySelector('.btn-favorite').onclick = (e) => {
-            e.stopPropagation();
-            toggleFavorite(pessoa, tarefa);
-        };
-
-        li.querySelector('.btn-confirm').onclick = (e) => {
-            e.stopPropagation();
-            moveToMinhasTarefas(pessoa, tarefa);
-        };
-
-        li.querySelector('.btn-delete').onclick = (e) => {
-            e.stopPropagation();
-            removeFavorite(pessoa, tarefa);
-        };
-        
-        ul.appendChild(li);
-    });
-    
-    content.appendChild(dropZone);
-    content.appendChild(ul);
-    
-    acc.appendChild(dropIndicatorTop);
-    acc.appendChild(header);
-    acc.appendChild(content);
-    acc.appendChild(dropIndicatorBottom);
-    
-    acc.addEventListener('dragover', handleAccordionDragOver);
-    acc.addEventListener('drop', handleAccordionDrop);
-    
-    return acc;
-}
-
-// Funções auxiliares necessárias
-function isFavorited(pessoa, tarefa) {
-    return favoritos.some(f => f.pessoa === pessoa && f.tarefa === tarefa);
-}
-
-function moveToMinhasTarefas(pessoa, tarefa) {
-    if (confirm(`Mover "${tarefa}" para Minhas Tarefas?`)) {
-        adicionarTarefa(tarefa, `Importado de ${pessoa}`);
-        removeFavorite(pessoa, tarefa);
-    }
-}
-
-function removeFavorite(pessoa, tarefa) {
-    if (confirm(`Remover "${tarefa}" dos favoritos?`)) {
-        favoritos = favoritos.filter(f => !(f.pessoa === pessoa && f.tarefa === tarefa));
-        saveFavoritos();
-        renderAccordion(document.getElementById("search").value.toLowerCase());
-    }
-}
-
-
-// Funções auxiliares
-function isFavorited(pessoa, tarefa) {
-    return favoritos.some(f => f.pessoa === pessoa && f.tarefa === tarefa);
-}
-
-function moveToMinhasTarefas(pessoa, tarefa) {
-    if (confirm(`Mover "${tarefa}" para Minhas Tarefas?`)) {
-        adicionarTarefa(tarefa, `Importado de ${pessoa}`);
-        removeFavorite(pessoa, tarefa);
-    }
-}
-
-function removeFavorite(pessoa, tarefa) {
-    if (confirm(`Remover "${tarefa}" dos favoritos?`)) {
-        favoritos = favoritos.filter(f => !(f.pessoa === pessoa && f.tarefa === tarefa));
-        saveFavoritos();
-        renderAccordion(document.getElementById("search").value.toLowerCase());
-    }
-}
-
-function renderAccordion(filtro = "") {
-    const container = document.getElementById("accordion-container");
-    container.innerHTML = "";
-
-    // Renderizar acordeões na ordem salva
-    accordionOrder.forEach(accordionId => {
-        if (accordionId === 'minhas-tarefas') {
-            const minhasTarefasAccordion = createMinhasTarefasAccordion(filtro);
-            if (minhasTarefasAccordion) {
-                container.appendChild(minhasTarefasAccordion);
             }
-        } else if (accordionId === 'lista-favoritos') {
-            const favoritosFiltrados = favoritos.filter(
-                (f) =>
-                    f.tarefa.toLowerCase().includes(filtro) ||
-                    f.pessoa.toLowerCase().includes(filtro)
-            );
             
-            if (favoritosFiltrados.length > 0 || !filtro) {
-                const acc = document.createElement("div");
-                acc.className = "accordion";
-                acc.setAttribute('data-accordion-id', 'lista-favoritos');
-                
-                // Drop indicators
-                const dropIndicatorTop = document.createElement("div");
-                dropIndicatorTop.className = "drop-indicator drop-indicator-top";
-                
-                const dropIndicatorBottom = document.createElement("div");
-                dropIndicatorBottom.className = "drop-indicator drop-indicator-bottom";
-
-                // Header
-                const header = document.createElement("div");
-                header.className = "accordion-header";
-                
-                const headerContent = document.createElement("div");
-                headerContent.className = "accordion-header-content";
-                
-                const title = document.createElement("div");
-                title.className = "accordion-title";
-                title.innerHTML = `<span>Lista de Favoritos (${favoritosFiltrados.length})</span>`;
-                
-                headerContent.appendChild(title);
-                header.appendChild(headerContent);
-                
-                header.onclick = function (e) {
-                    if (e.target.tagName !== "BUTTON") {
-                        this.nextElementSibling.style.display = this.nextElementSibling.style.display === "block" ? "none" : "block";
-                    }
-                };
-                
-                // Content
-                const content = document.createElement("div");
-                content.className = "accordion-content";
-                
-                const dropZone = document.createElement("div");
-                dropZone.className = "drop-zone";
-                dropZone.innerHTML = "Solte tarefas aqui para adicionar aos favoritos";
-                dropZone.addEventListener('dragover', handleDropZoneDragOver);
-                dropZone.addEventListener('drop', (e) => handleTaskDrop(e, 'lista-favoritos'));
-                
-                const ul = document.createElement("ul");
-                favoritosFiltrados.forEach(({ pessoa, tarefa }) => {
-                    const li = document.createElement("li");
-                    li.className = "task-item imported-task";
-                    li.setAttribute('data-task-id', tarefa);
-                    li.setAttribute('data-source', 'lista-favoritos');
-                    li.draggable = true;
-                    
-                    li.innerHTML = `
-                        <div class="task-drop-indicator task-drop-indicator-top"></div>
-                        <div class="task-content">
-                            <div class="task-drag-handle" draggable="true">⋮⋮</div>
-                            <div class="task-info">
-                                <div class="task-title">${tarefa}</div>
-                                <div class="task-description">De: ${pessoa}</div>
-                            </div>
-                            <div class="task-actions">
-                                <button class="task-menu-button">⋮</button>
-                                <div class="task-action-buttons" id="actions-fav-${tarefa.replace(/\s+/g, '-')}">
-                                    <button class="task-action-btn btn-favorite" title="Favoritar">${isFavorited(pessoa, tarefa) ? '★' : '☆'}</button>
-                                    <button class="task-action-btn btn-confirm" title="Mover para Minhas Tarefas">✔️</button>
-                                    <button class="task-action-btn btn-delete" title="Excluir">🗑️</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="task-drop-indicator task-drop-indicator-bottom"></div>
-                    `;
-                    
-                    // Drag events
-                    li.querySelector('.task-drag-handle').addEventListener('dragstart', handleTaskDragStart);
-                    li.addEventListener('dragover', handleTaskDragOver);
-                    li.addEventListener('drop', handleTaskDrop);
-                    li.addEventListener('dragend', handleTaskDragEnd);
-                    
-                    // Action buttons events
-                    const menuBtn = li.querySelector('.task-menu-button');
-                    menuBtn.onclick = (e) => {
-                        e.stopPropagation();
-                        const buttons = li.querySelector('.task-action-buttons');
-                        buttons.classList.toggle('show');
-                    };
-
-                    li.querySelector('.btn-favorite').onclick = (e) => {
-                        e.stopPropagation();
-                        toggleFavorite(pessoa, tarefa);
-                    };
-
-                    li.querySelector('.btn-confirm').onclick = (e) => {
-                        e.stopPropagation();
-                        moveToMinhasTarefas(pessoa, tarefa);
-                    };
-
-                    li.querySelector('.btn-delete').onclick = (e) => {
-                        e.stopPropagation();
-                        removeFavorite(pessoa, tarefa);
-                    };
-                    
-                    ul.appendChild(li);
-                });
-                
-                content.appendChild(dropZone);
-                content.appendChild(ul);
-                
-                acc.appendChild(dropIndicatorTop);
-                acc.appendChild(header);
-                acc.appendChild(content);
-                acc.appendChild(dropIndicatorBottom);
-                
-                acc.addEventListener('dragover', handleAccordionDragOver);
-                acc.addEventListener('drop', handleAccordionDrop);
-                
-                container.appendChild(acc);
-            }
-        } else if (tarefasPorPessoa[accordionId]) {
-            const tarefasFiltradas = tarefasPorPessoa[accordionId].filter(
-                (t) => t.toLowerCase().includes(filtro)
-            );
-            if (tarefasFiltradas.length > 0 || accordionId.toLowerCase().includes(filtro)) {
-                const acc = document.createElement("div");
-                acc.className = "accordion";
-                acc.setAttribute('data-accordion-id', accordionId);
-
-                // Drop indicators
-                const dropIndicatorTop = document.createElement("div");
-                dropIndicatorTop.className = "drop-indicator drop-indicator-top";
-                
-                const dropIndicatorBottom = document.createElement("div");
-                dropIndicatorBottom.className = "drop-indicator drop-indicator-bottom";
-
-                // Header
-                const header = document.createElement("div");
-                header.className = "accordion-header";
-                
-                const headerContent = document.createElement("div");
-                headerContent.className = "accordion-header-content";
-                
-                const dragHandle = document.createElement("div");
-                dragHandle.className = "drag-handle";
-                dragHandle.innerHTML = "⋮⋮";
-                dragHandle.draggable = true;
-                dragHandle.addEventListener('dragstart', handleAccordionDragStart);
-                dragHandle.addEventListener('dragend', handleAccordionDragEnd);
-                
-                const title = document.createElement("div");
-                title.className = "accordion-title";
-                title.innerHTML = `
-                    <span>${accordionId} (${tarefasFiltradas.length})</span>
-                    <input type="text" value="${accordionId}" style="display: none;">
-                `;
-                
-                const editBtn = document.createElement("button");
-                editBtn.className = "edit-btn";
-                editBtn.innerHTML = "✎";
-                editBtn.onclick = (e) => {
-                    e.stopPropagation();
-                    editAccordionTitle(accordionId);
-                };
-                
-                // Event listeners para o input
-                const titleInput = title.querySelector('input');
-                titleInput.addEventListener('blur', () => {
-                    saveAccordionTitle(accordionId, titleInput.value);
-                });
-                titleInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
-                        titleInput.blur();
-                    }
-                });
-                
-                headerContent.appendChild(dragHandle);
-                headerContent.appendChild(title);
-                header.appendChild(headerContent);
-                header.appendChild(editBtn);
-                
-                header.onclick = function (e) {
-                    if (e.target.tagName !== "BUTTON" && e.target.tagName !== "INPUT" && !e.target.classList.contains('drag-handle')) {
-                        this.nextElementSibling.style.display = this.nextElementSibling.style.display === "block" ? "none" : "block";
-                    }
-                };
-
-                // Content
-                const content = document.createElement("div");
-                content.className = "accordion-content";
-                
-                const dropZone = document.createElement("div");
-                dropZone.className = "drop-zone";
-                dropZone.innerHTML = `Solte tarefas aqui para mover para ${accordionId}`;
-                dropZone.addEventListener('dragover', handleDropZoneDragOver);
-                dropZone.addEventListener('drop', (e) => handleTaskDrop(e, accordionId));
-                
-                const ul = document.createElement("ul");
-                tarefasFiltradas.forEach(tarefa => {
-                    const taskElement = createImportedTask(accordionId, tarefa, accordionId);
-                    ul.appendChild(taskElement);
-                });
-                
-                content.appendChild(dropZone);
-                content.appendChild(ul);
-
-                acc.appendChild(dropIndicatorTop);
-                acc.appendChild(header);
-                acc.appendChild(content);
-                acc.appendChild(dropIndicatorBottom);
-                
-                acc.addEventListener('dragover', handleAccordionDragOver);
-                acc.addEventListener('drop', handleAccordionDrop);
-                
-                container.appendChild(acc);
-            }
+            renderAccordion(document.getElementById("search").value.toLowerCase());
+            showStatus(`Tarefa ${existsIndex >= 0 ? 'removida dos' : 'adicionada aos'} favoritos`);
         }
-    });
 
-    // Adicionar acordeões que não estão na ordem salva
-    for (let pessoa in tarefasPorPessoa) {
-        if (!accordionOrder.includes(pessoa)) {
-            accordionOrder.push(pessoa);
-            saveAccordionOrder();
-        }
-    }
-}
-
-        function createStar(pessoa, tarefa) {
-            const star = document.createElement("span");
-            star.className = "star";
-            star.innerHTML = "★";
-            if (favoritos.find((f) => f.pessoa === pessoa && f.tarefa === tarefa)) {
-                star.classList.add("favorited");
-            }
-            star.onclick = function () {
-                const idx = favoritos.findIndex(
-                    (f) => f.pessoa === pessoa && f.tarefa === tarefa
-                );
-                if (idx >= 0) {
-                    favoritos.splice(idx, 1);
-                } else {
-                    favoritos.push({ pessoa, tarefa });
+        function removeTask(pessoa, tarefa) {
+            if (confirm(`Remover "${tarefa}" da lista de ${pessoa}?`)) {
+                if (tarefasPorPessoa[pessoa]) {
+                    tarefasPorPessoa[pessoa] = tarefasPorPessoa[pessoa].filter(t => t !== tarefa);
+                    saveTarefasPorPessoa();
                 }
-                saveFavoritos();
-                renderAccordion(document.getElementById("search").value.toLowerCase());
-            };
-            return star;
+                
+                // Também remove dos favoritos se estiver lá
+                const favIndex = favoritos.findIndex(f => f.pessoa === pessoa && f.tarefa === tarefa);
+                if (favIndex >= 0) {
+                    favoritos.splice(favIndex, 1);
+                    saveFavoritos();
+                }
+                
+                renderAccordion();
+                showStatus('Tarefa removida com sucesso');
+            }
         }
 
         function exportFavoritosJSON() {
@@ -2878,261 +2554,224 @@ function renderAccordion(filtro = "") {
                     timestamp: new Date().toISOString()
                 };
                 const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
-                const
-				
-				        url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'tarefas_segunda_backup.json';
-        a.click();
-        URL.revokeObjectURL(url);
-      }
-    }
-
-    async function importDatabase() {
-      const input = document.getElementById('restore');
-      input.onchange = async function(e) {
-        const file = e.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = async function(e) {
-            try {
-              if (file.name.endsWith('.sqlite')) {
-                if (!sqliteReady) {
-                  showStatus('Inicializando SQLite...', false);
-                  await initSQLite();
-                }
-                
-                if (sqliteReady && SQL) {
-                  try {
-                    const uint8Array = new Uint8Array(e.target.result);
-                    db = new SQL.Database(uint8Array);
-                    const data = loadFromSQLite();
-                    minhasTarefas = data.minhasTarefas;
-                    favoritos = data.favoritos;
-                    tarefasPorPessoa = data.tarefasPorPessoa;
-                    accordionOrder = data.accordionOrder;
-                    renderAccordion();
-                    showStatus('Banco SQLite restaurado com sucesso!');
-                  } catch (sqlError) {
-                    console.error('Erro ao processar arquivo SQLite:', sqlError);
-                    showStatus('Erro: Arquivo SQLite inválido ou corrompido', true);
-                  }
-                } else {
-                  showStatus('Erro: SQLite não está disponível', true);
-                }
-              } else if (file.name.endsWith('.json')) {
-                try {
-                  const backup = JSON.parse(e.target.result);
-                  minhasTarefas = backup.minhasTarefas || [];
-                  favoritos = backup.favoritos || [];
-                  tarefasPorPessoa = backup.tarefasPorPessoa || {};
-                  accordionOrder = backup.accordionOrder || ['minhas-tarefas', 'lista-favoritos'];
-                  saveMinhasTarefas();
-                  saveFavoritos();
-                  saveTarefasPorPessoa();
-                  saveAccordionOrder();
-                  renderAccordion();
-                  showStatus('Backup JSON restaurado com sucesso!');
-                } catch (jsonError) {
-                  console.error('Erro ao processar arquivo JSON:', jsonError);
-                  showStatus('Erro: Arquivo JSON inválido', true);
-                }
-              }
-            } catch (error) {
-              console.error('Erro geral ao restaurar backup:', error);
-              showStatus('Erro ao restaurar backup: ' + error.message, true);
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'tarefas_segunda_backup.json';
+                a.click();
+                URL.revokeObjectURL(url);
             }
-          };
-          
-          if (file.name.endsWith('.sqlite')) {
-            reader.readAsArrayBuffer(file);
-          } else {
-            reader.readAsText(file);
-          }
+            closeSidebar();
         }
-      };
-      input.click();
-    }
 
-    function clearWordData() {
-      if (confirm("Tem certeza que deseja limpar todos os dados carregados do Word? Esta ação não pode ser desfeita.\n\nOs dados de 'Minhas Tarefas' e 'Lista de Favoritos' serão preservados.")) {
-        // Limpar dados do Word
-        tarefasPorPessoa = {};
-        
-        // Resetar ordem dos acordeões para apenas os fixos
-        accordionOrder = ['minhas-tarefas', 'lista-favoritos'];
-        
-        // Salvar alterações
-        saveTarefasPorPessoa();
-        saveAccordionOrder();
-        
-        // Renderizar novamente
-        renderAccordion();
-        
-        showStatus('Dados do Word limpos com sucesso!');
-      }
-    }
-
-    document.getElementById("search").addEventListener("input", function () {
-      renderAccordion(this.value.toLowerCase());
-    });
-
-    document.getElementById("upload").addEventListener("change", function (event) {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          mammoth.extractRawText({ arrayBuffer: e.target.result }).then((result) => {
-            const lines = result.value.split("\n");
-            let current = "";
-            tarefasPorPessoa = {};
-
-            lines.forEach((line) => {
-              line = line.trim();
-              if (line.length === 0) return;
-              
-              // Detectar títulos: uma palavra, primeira letra maiúscula
-              if (/^[A-ZÁÉÍÓÚÃÕÇ][a-záéíóúãõç]*$/.test(line)) {
-                current = line;
-                tarefasPorPessoa[current] = [];
-                // Adicionar à ordem se não existir
-                if (!accordionOrder.includes(current)) {
-                  accordionOrder.push(current);
+        async function importDatabase() {
+            const input = document.getElementById('restore');
+            input.onchange = async function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = async function(e) {
+                        try {
+                            if (file.name.endsWith('.sqlite')) {
+                                if (!sqliteReady) {
+                                    showStatus('Inicializando SQLite...', false);
+                                    await initSQLite();
+                                }
+                                
+                                if (sqliteReady && SQL) {
+                                    try {
+                                        const uint8Array = new Uint8Array(e.target.result);
+                                        db = new SQL.Database(uint8Array);
+                                        const data = loadFromSQLite();
+                                        minhasTarefas = data.minhasTarefas;
+                                        favoritos = data.favoritos;
+                                        tarefasPorPessoa = data.tarefasPorPessoa;
+                                        accordionOrder = data.accordionOrder;
+                                        renderAccordion();
+                                        showStatus('Banco SQLite restaurado com sucesso!');
+                                    } catch (sqlError) {
+                                        console.error('Erro ao processar arquivo SQLite:', sqlError);
+                                        showStatus('Erro: Arquivo SQLite inválido ou corrompido', true);
+                                    }
+                                } else {
+                                    showStatus('Erro: SQLite não está disponível', true);
+                                }
+                            } else if (file.name.endsWith('.json')) {
+                                try {
+                                    const backup = JSON.parse(e.target.result);
+                                    minhasTarefas = backup.minhasTarefas || [];
+                                    favoritos = backup.favoritos || [];
+                                    tarefasPorPessoa = backup.tarefasPorPessoa || {};
+                                    accordionOrder = backup.accordionOrder || ['minhas-tarefas', 'lista-favoritos'];
+                                    saveMinhasTarefas();
+                                    saveFavoritos();
+                                    saveTarefasPorPessoa();
+                                    saveAccordionOrder();
+                                    renderAccordion();
+                                    showStatus('Backup JSON restaurado com sucesso!');
+                                } catch (jsonError) {
+                                    console.error('Erro ao processar arquivo JSON:', jsonError);
+                                    showStatus('Erro: Arquivo JSON inválido', true);
+                                }
+                            }
+                        } catch (error) {
+                            console.error('Erro geral ao restaurar backup:', error);
+                            showStatus('Erro ao restaurar backup: ' + error.message, true);
+                        }
+                    };
+                    
+                    if (file.name.endsWith('.sqlite')) {
+                        reader.readAsArrayBuffer(file);
+                    } else {
+                        reader.readAsText(file);
+                    }
                 }
-              } else if (current && line.length > 0) {
-                // Limpar marcadores de lista e adicionar tarefa
-                const cleanLine = line.replace(/^[•\-\*]\s*/, '').trim();
-                if (cleanLine.length > 0) {
-                  tarefasPorPessoa[current].push(cleanLine);
-                }
-              }
+            };
+            input.click();
+        }
+
+        function clearWordData() {
+            if (confirm("Tem certeza que deseja limpar todos os dados carregados do Word? Esta ação não pode ser desfeita.\n\nOs dados de 'Minhas Tarefas' e 'Lista de Favoritos' serão preservados.")) {
+                // Limpar dados do Word
+                tarefasPorPessoa = {};
+                
+                // Resetar ordem dos acordeões para apenas os fixos
+                accordionOrder = ['minhas-tarefas', 'lista-favoritos'];
+                
+                // Salvar alterações
+                saveTarefasPorPessoa();
+                saveAccordionOrder();
+                
+                // Renderizar novamente
+                renderAccordion();
+                
+                showStatus('Dados do Word limpos com sucesso!');
+            }
+            closeSidebar();
+        }
+
+        document.getElementById("search").addEventListener("input", function () {
+            renderAccordion(this.value.toLowerCase());
+        });
+
+        document.getElementById("upload").addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    mammoth.extractRawText({ arrayBuffer: e.target.result }).then((result) => {
+                        const lines = result.value.split("\n");
+                        let current = "";
+                        tarefasPorPessoa = {};
+
+                        lines.forEach((line) => {
+                            line = line.trim();
+                            if (line.length === 0) return;
+                            
+                            // Detectar títulos: uma palavra, primeira letra maiúscula
+                            if (/^[A-ZÁÉÍÓÚÃÕÇ][a-záéíóúãõç]*$/.test(line)) {
+                                current = line;
+                                tarefasPorPessoa[current] = [];
+                                // Adicionar à ordem se não existir
+                                if (!accordionOrder.includes(current)) {
+                                    accordionOrder.push(current);
+                                }
+                            } else if (current && line.length > 0) {
+                                // Limpar marcadores de lista e adicionar tarefa
+                                const cleanLine = line.replace(/^[•\-\*]\s*/, '').trim();
+                                if (cleanLine.length > 0) {
+                                    tarefasPorPessoa[current].push(cleanLine);
+                                }
+                            }
+                        });
+                        
+                        saveTarefasPorPessoa();
+                        saveAccordionOrder();
+                        renderAccordion();
+                        showStatus('Documento carregado com sucesso!');
+                    }).catch(error => {
+                        console.error('Erro ao processar documento:', error);
+                        showStatus('Erro ao processar documento Word', true);
+                    });
+                };
+                reader.readAsArrayBuffer(file);
+            }
+        });
+
+        document.addEventListener("keydown", function (e) {
+            if (e.ctrlKey && e.key === "n") {
+                e.preventDefault();
+                openTaskModal();
+            }
+        });
+
+        // Registrar Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('sw.js')
+                    .then(function(registration) {
+                        console.log('ServiceWorker registrado com sucesso:', registration.scope);
+                    }, function(err) {
+                        console.log('ServiceWorker falhou ao registrar:', err);
+                    });
+            });
+        }
+
+        // Detectar instalação PWA
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            const installBtn = document.createElement('button');
+            installBtn.textContent = 'Instalar App';
+            installBtn.className = 'menu-button';
+            installBtn.style.position = 'fixed';
+            installBtn.style.bottom = '70px';
+            installBtn.style.right = '20px';
+            installBtn.style.zIndex = '1000';
+            
+            installBtn.addEventListener('click', () => {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('PWA instalado');
+                        showStatus('PWA instalado com sucesso!');
+                    }
+                    deferredPrompt = null;
+                    installBtn.remove();
+                });
             });
             
-            saveTarefasPorPessoa();
-            saveAccordionOrder();
+            document.body.appendChild(installBtn);
+        });
+
+        // Inicializar aplicação
+        async function init() {
+            showStatus('Inicializando aplicação...', false);
+            
+            loadAccordionStates();
+            
+            const sqliteInitialized = await initSQLite();
+            if (sqliteInitialized) {
+                const data = loadFromSQLite();
+                minhasTarefas = data.minhasTarefas;
+                favoritos = data.favoritos;
+                tarefasPorPessoa = data.tarefasPorPessoa;
+                accordionOrder = data.accordionOrder;
+                showStatus('SQLite carregado com sucesso!');
+            } else {
+                minhasTarefas = JSON.parse(localStorage.getItem("minhasTarefas") || "[]");
+                favoritos = JSON.parse(localStorage.getItem("favoritos") || "[]");
+                tarefasPorPessoa = JSON.parse(localStorage.getItem("tarefasPorPessoa") || "{}");
+                accordionOrder = JSON.parse(localStorage.getItem("accordionOrder") || '["minhas-tarefas", "lista-favoritos"]');
+                showStatus('Usando localStorage como backup', true);
+            }
+            
             renderAccordion();
-            showStatus('Documento carregado com sucesso!');
-          }).catch(error => {
-            console.error('Erro ao processar documento:', error);
-            showStatus('Erro ao processar documento Word', true);
-          });
-        };
-        reader.readAsArrayBuffer(file);
-      }
-    });
+        }
 
-document.addEventListener('click', function(e) {
-    if (!e.target.closest('.task-actions') && !e.target.classList.contains('task-menu-button')) {
-        document.querySelectorAll('.task-action-buttons').forEach(menu => {
-            menu.classList.remove('show');
-        });
-    }
-});
-
-	document.addEventListener('click', (e) => {
-		if (!e.target.closest('.task-actions') && !e.target.classList.contains('task-menu-button')) {
-			document.querySelectorAll('.task-action-buttons').forEach(menu => {
-				menu.classList.remove('show');
-			});
-		}
-	});
-
-    document.addEventListener("keydown", function (e) {
-      if (e.ctrlKey && e.key === "n") {
-        e.preventDefault();
-        openTaskModal();
-      }
-    });
-
-    // Registrar Service Worker
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function() {
-        navigator.serviceWorker.register('sw.js')
-          .then(function(registration) {
-            console.log('ServiceWorker registrado com sucesso:', registration.scope);
-          }, function(err) {
-            console.log('ServiceWorker falhou ao registrar:', err);
-          });
-      });
-    }
-
-    // Detectar instalação PWA
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      
-      const installBtn = document.createElement('button');
-      installBtn.textContent = 'Instalar App';
-      installBtn.className = 'menu-button';
-      installBtn.style.position = 'fixed';
-      installBtn.style.bottom = '70px';
-      installBtn.style.right = '20px';
-      installBtn.style.zIndex = '1000';
-      
-      installBtn.addEventListener('click', () => {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
-          if (choiceResult.outcome === 'accepted') {
-            console.log('PWA instalado');
-            showStatus('PWA instalado com sucesso!');
-          }
-          deferredPrompt = null;
-          installBtn.remove();
-        });
-      });
-      
-      document.body.appendChild(installBtn);
-    });
-
-    // Inicializar aplicação
-    async function init() {
-      showStatus('Inicializando aplicação...', false);
-      
-      const sqliteInitialized = await initSQLite();
-      if (sqliteInitialized) {
-        const data = loadFromSQLite();
-        minhasTarefas = data.minhasTarefas;
-        favoritos = data.favoritos;
-        tarefasPorPessoa = data.tarefasPorPessoa;
-        accordionOrder = data.accordionOrder;
-        showStatus('SQLite carregado com sucesso!');
-      } else {
-        minhasTarefas = JSON.parse(localStorage.getItem("minhasTarefas") || "[]");
-        favoritos = JSON.parse(localStorage.getItem("favoritos") || "[]");
-        tarefasPorPessoa = JSON.parse(localStorage.getItem("tarefasPorPessoa") || "{}");
-        accordionOrder = JSON.parse(localStorage.getItem("accordionOrder") || '["minhas-tarefas", "lista-favoritos"]');
-        showStatus('Usando localStorage como backup', true);
-      }
-      
-      renderAccordion();
-    }
-
-/* INÍCIO - FUNÇÕES AUXILIARES */
-// Função para alternar favoritos
-function toggleFavorite(pessoa, tarefa) {
-    const index = favoritos.findIndex(f => f.pessoa === pessoa && f.tarefa === tarefa);
-    if (index >= 0) {
-        favoritos.splice(index, 1);
-    } else {
-        favoritos.push({ pessoa, tarefa });
-    }
-    saveFavoritos();
-    renderAccordion(document.getElementById("search").value.toLowerCase());
-}
-
-// Função para remover tarefa
-function removeTask(pessoa, tarefa) {
-    if (confirm(`Remover "${tarefa}" da lista de ${pessoa}?`)) {
-        tarefasPorPessoa[pessoa] = tarefasPorPessoa[pessoa].filter(t => t !== tarefa);
-        saveTarefasPorPessoa();
-        renderAccordion(document.getElementById("search").value.toLowerCase());
-    }
-}
-/* FIM - FUNÇÕES AUXILIARES */
-
-    init();
-  </script>
+        init();
+    </script>
 </body>
 </html>
